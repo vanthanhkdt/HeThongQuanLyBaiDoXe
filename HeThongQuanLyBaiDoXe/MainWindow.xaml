@@ -1,0 +1,861 @@
+﻿<Window x:Class="HeThongQuanLyBaiDoXe.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HeThongQuanLyBaiDoXe"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+        xmlns:MetroChart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"
+        mc:Ignorable="d" Height="820" Width="1024" WindowStartupLocation="CenterScreen"
+        Title="Hệ thống Quản lý bãi đỗ xe - TNUT - FEE - Phiên bản 2." Icon="/Assets/insurance-motorcycle-cover-protection-service-maintenance-health-512.png">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <local:BoolToVisibilityConverterInv x:Key="BoolToVisibilityConverterInv"/>
+
+            <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Thumb}">
+                            <Grid x:Name="Grid">
+                                <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Fill="Transparent" />
+                                <Border x:Name="Rectangle1" CornerRadius="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto"  Background="{TemplateBinding Background}" />
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="Tag" Value="Horizontal">
+                                    <Setter TargetName="Rectangle1" Property="Width" Value="Auto" />
+                                    <Setter TargetName="Rectangle1" Property="Height" Value="7" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!--ScrollBars-->
+            <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
+                <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
+                <Setter Property="Foreground" Value="LightGray" />
+                <Setter Property="Background" Value="DarkGray" />
+                <Setter Property="Width" Value="10" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ScrollBar}">
+                            <Grid x:Name="GridRoot" Width="19" Background="{x:Null}">
+                                <Track x:Name="PART_Track" Grid.Row="0" IsDirectionReversed="true" Focusable="false">
+                                    <Track.Thumb>
+                                        <Thumb x:Name="Thumb" Background="{TemplateBinding Foreground}" Style="{DynamicResource ScrollThumbs}" />
+                                    </Track.Thumb>
+                                    <Track.IncreaseRepeatButton>
+                                        <RepeatButton x:Name="PageUp" Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="false" />
+                                    </Track.IncreaseRepeatButton>
+                                    <Track.DecreaseRepeatButton>
+                                        <RepeatButton x:Name="PageDown" Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="false" />
+                                    </Track.DecreaseRepeatButton>
+                                </Track>
+                            </Grid>
+
+                            <ControlTemplate.Triggers>
+                                <Trigger SourceName="Thumb" Property="IsMouseOver" Value="true">
+                                    <Setter Value="{DynamicResource ButtonSelectBrush}" TargetName="Thumb" Property="Background" />
+                                </Trigger>
+                                <Trigger SourceName="Thumb" Property="IsDragging" Value="true">
+                                    <Setter Value="{DynamicResource DarkBrush}" TargetName="Thumb" Property="Background" />
+                                </Trigger>
+
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter TargetName="Thumb" Property="Visibility" Value="Collapsed" />
+                                </Trigger>
+                                <Trigger Property="Orientation" Value="Horizontal">
+                                    <Setter TargetName="GridRoot" Property="LayoutTransform">
+                                        <Setter.Value>
+                                            <RotateTransform Angle="-90" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter TargetName="PART_Track" Property="LayoutTransform">
+                                        <Setter.Value>
+                                            <RotateTransform Angle="-90" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="Width" Value="Auto" />
+                                    <Setter Property="Height" Value="12" />
+                                    <Setter TargetName="Thumb" Property="Tag" Value="Horizontal" />
+                                    <Setter TargetName="PageDown" Property="Command" Value="ScrollBar.PageLeftCommand" />
+                                    <Setter TargetName="PageUp" Property="Command" Value="ScrollBar.PageRightCommand" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="270"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Column="1" Grid.Row="1" Background="#FFCFCFCF">
+            <TabControl TabStripPlacement="Top" SelectedIndex="{Binding TabControlSelectedIndex}" BorderBrush="Transparent" BorderThickness="0">
+                <TabControl.ItemContainerStyle>
+                    <Style TargetType="{x:Type TabItem}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </Style>
+                </TabControl.ItemContainerStyle>
+                <TabItem Header="Thống kê">
+                    <Grid Background="#FFCFCFCF">
+                        <ScrollViewer>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="200"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Grid.Column="0">
+                                    <Rectangle Height="120" Margin="20" Fill="White" RadiusY="10" RadiusX="10" >
+                                        <Rectangle.Effect>
+                                            <DropShadowEffect BlurRadius="20" Color="#FFDEDEDE" RenderingBias="Quality" ShadowDepth="1"/>
+                                        </Rectangle.Effect>
+                                    </Rectangle>
+                                    <Grid Margin="25" Height="120">
+                                        <Grid Width="35" Height="50" Background="#FFFFAF24" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20 0">
+                                            <Grid.Effect>
+                                                <DropShadowEffect BlurRadius="20" Color="#FFECECEC" RenderingBias="Quality" ShadowDepth="1"/>
+                                            </Grid.Effect>
+                                            <materialDesign:PackIcon Kind="RegistrationMark" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="5" Foreground="White" Width="20" Height="20"/>
+                                        </Grid>
+                                        <TextBlock Text="Tỉ lệ xe đang gửi" HorizontalAlignment="Right" FontFamily="Champagne &amp; Limousines" Margin="5" VerticalAlignment="Top" Foreground="Gray"/>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10 20">
+                                            <TextBlock Name="tblTiLeXeDangGui" Text="85.6" FontFamily="Champagne &amp; Limousines" VerticalAlignment="Center" Foreground="Gray" FontSize="50"/>
+                                            <TextBlock Text="%" FontFamily="Champagne &amp; Limousines" Margin="0 5" Foreground="Gray" FontSize="20" VerticalAlignment="Bottom"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="20" Cursor="Hand">
+                                            <materialDesign:PackIcon Kind="AlertOutline" Foreground="Red" Width="10" Height="10" VerticalAlignment="Center" Margin="5 0"/>
+                                            <TextBlock Text="Số lượng xe gửi nhiều." FontSize="8" Foreground="#FF8522BD"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Grid>
+                                <Grid Grid.Column="1">
+                                    <Rectangle Height="120" Margin="20" Fill="White" RadiusY="10" RadiusX="10" >
+                                        <Rectangle.Effect>
+                                            <DropShadowEffect BlurRadius="20" Color="#FFDEDEDE" RenderingBias="Quality" ShadowDepth="1"/>
+                                        </Rectangle.Effect>
+                                    </Rectangle>
+                                    <Grid Margin="25" Height="120">
+                                        <Grid Width="35" Height="50" Background="#FF41A43C" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20 0">
+                                            <Grid.Effect>
+                                                <DropShadowEffect BlurRadius="20" Color="#FFECECEC" RenderingBias="Quality" ShadowDepth="1"/>
+                                            </Grid.Effect>
+                                            <materialDesign:PackIcon Kind="Motorbike" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="5" Foreground="White" Width="20" Height="20"/>
+                                        </Grid>
+                                        <TextBlock Text="Tỉ lệ xe đã trả" HorizontalAlignment="Right" FontFamily="Champagne &amp; Limousines" Margin="5" VerticalAlignment="Top" Foreground="Gray"/>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10 30">
+                                            <!--<TextBlock Text="(XE)" FontFamily="Champagne &amp; Limousines" Margin="0 2" Foreground="Gray" FontSize="20" VerticalAlignment="Bottom"/>
+                                <TextBlock Text="12/1500" FontFamily="Champagne &amp; Limousines" VerticalAlignment="Center" Foreground="Gray" FontSize="30"/>-->
+                                            <TextBlock Name="tblTiLeXeDaTra" Text="14.4" FontFamily="Champagne &amp; Limousines" VerticalAlignment="Center" Foreground="Gray" FontSize="50"/>
+                                            <TextBlock Text="%" FontFamily="Champagne &amp; Limousines" Margin="0 5" Foreground="Gray" FontSize="20" VerticalAlignment="Bottom"/>
+
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="20">
+                                            <materialDesign:PackIcon Kind="InformationCircleOutline" Foreground="Gray" Width="10" Height="10" VerticalAlignment="Center" Margin="5 0"/>
+                                            <TextBlock Text="Xem chi tiết." FontSize="8" Foreground="Gray"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Grid>
+                                <Grid Grid.Column="2">
+                                    <Rectangle Height="120" Margin="20" Fill="White" RadiusY="10" RadiusX="10" >
+                                        <Rectangle.Effect>
+                                            <DropShadowEffect BlurRadius="20" Color="#FFDEDEDE" RenderingBias="Quality" ShadowDepth="1"/>
+                                        </Rectangle.Effect>
+                                    </Rectangle>
+                                    <Grid Margin="25" Height="120">
+                                        <Grid Width="35" Height="50" Background="#FFCF1F1F" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20 0">
+                                            <Grid.Effect>
+                                                <DropShadowEffect BlurRadius="20" Color="#FFECECEC" RenderingBias="Quality" ShadowDepth="1"/>
+                                            </Grid.Effect>
+                                            <materialDesign:PackIcon Kind="InformationOutline" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="5" Foreground="White" Width="20" Height="20"/>
+                                        </Grid>
+                                        <TextBlock Text="Số lượng chỗ khả dụng" HorizontalAlignment="Right" FontFamily="Champagne &amp; Limousines" Margin="5" VerticalAlignment="Top" Foreground="Gray"/>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10 30 10 10">
+                                            <!--<TextBlock Text="CHỖ " FontFamily="Champagne &amp; Limousines" Margin="0 2" Foreground="Gray" FontSize="18" VerticalAlignment="Bottom"/>
+                                <TextBlock Text="385/500" FontFamily="Champagne &amp; Limousines" VerticalAlignment="Center" Foreground="Gray" FontSize="32"/>-->
+                                            <TextBlock Name="tblSoLuongChoKhaDung" Text="385/" FontFamily="Champagne &amp; Limousines" Margin="0 5" Foreground="Gray" FontSize="20" VerticalAlignment="Bottom"/>
+                                            <TextBlock Name="tblTongSoLuongCho" Text="500" FontFamily="Champagne &amp; Limousines" VerticalAlignment="Center" Foreground="Gray" FontSize="50"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="20">
+                                            <materialDesign:PackIcon Kind="ProgressWarning" Foreground="Gray" Width="10" Height="10" VerticalAlignment="Center" Margin="5 0"/>
+                                            <TextBlock Text="Số lượng chỗ trống ít." FontSize="8" Foreground="Gray"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Grid>
+
+                                <Grid Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="3" HorizontalAlignment="Center" Width="580" Height="510">
+                                    <Grid Background="White" Margin="20 50 20 20">
+                                        <Grid.OpacityMask>
+                                            <VisualBrush Visual="{ Binding ElementName=BorderG1 }"/>
+                                        </Grid.OpacityMask>
+                                        <Border x:Name="BorderG1" CornerRadius="5" Background="White"/>
+                                        <StackPanel VerticalAlignment="Bottom" >
+                                            <TextBlock Text="Lượng gửi hôm nay" Margin="10 0" FontFamily="Champagne &amp; Limousines" Foreground="Gray" FontSize="20"/>
+                                            <StackPanel Orientation="Horizontal" Margin="20 5">
+                                                <materialDesign:PackIcon Name="packIconTiLeThayDoi" Kind="ArrowUp" Foreground="Green" VerticalAlignment="Center"/>
+                                                <TextBlock Name="tblTiLeThayDoi" Text="15%" FontFamily="Champagne &amp; Limousines" Foreground="Green" FontSize="15"/>
+                                                <TextBlock Name="btlTinhTrangTiLeThayDoi" Text="Tăng nhẹ" Margin="20 0" FontFamily="Champagne &amp; Limousines" Foreground="Gray" FontSize="15"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="10 5">
+                                                <materialDesign:PackIcon Kind="Clock" Foreground="Gray" VerticalAlignment="Center"/>
+                                                <TextBlock Name="tblThoiGianCapNhat" Text="Cập nhật: 18:21 09/11/2019" Margin="5 0" FontFamily="Champagne &amp; Limousines" Foreground="Gray" FontSize="15"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Margin="50 20 50 150">
+                                        <Grid.OpacityMask>
+                                            <VisualBrush Visual="{ Binding ElementName=BorderG2 }"/>
+                                        </Grid.OpacityMask>
+                                        <Border x:Name="BorderG2" CornerRadius="15" Background="#FF340051">
+                                            <local:BieuDoUserControl Margin="20"/>
+                                        </Border>
+
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </ScrollViewer>
+                    </Grid>
+
+                </TabItem>
+                <TabItem Header="Tài Khoản">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <TextBlock Text="QUẢN LÝ TÀI KHOẢN" Foreground="#FF8B3299" FontSize="16" FontFamily="Tahoma" FontWeight="DemiBold" Margin="15,25,0,0"></TextBlock>
+                            <TextBlock Text=">> Quản trị viên" Foreground="#FF8B3299" FontSize="12" FontFamily="Tahoma" FontWeight="Light" FontStyle="Italic" Margin="190,29,0,0"></TextBlock>
+                            <Rectangle Width="266" Height="5" Fill="#FF8B3299" Margin="15,50,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></Rectangle>
+                            <Rectangle Width="266" Height="1" Fill="#FF8B3299" Margin="15,58,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></Rectangle>
+                        </Grid>
+                        <DataGrid Grid.Row="1" x:Name="dgQuanTriTaiKhoan" CanUserResizeColumns="False" CanUserResizeRows="False" IsReadOnly="True" HorizontalAlignment="Center" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Width="Auto" Margin="15,0,15,15">
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Name="chiTiet" Header="Chi tiết" Click="ChiTiet_Click">
+                                        <MenuItem.Icon>
+                                            <Image Name="Details" Source="Assets/detail.png" Height="20" Width="20"></Image>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Phê duyệt" Click="Edit_Click">
+                                        <MenuItem.Icon>
+                                            <Image Name="Edit" Source="Assets/edit.png" Height="20" Width="20"></Image>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Từ chối" Click="Delete_Click">
+                                        <MenuItem.Icon>
+                                            <Image Name="Delete" Source="Assets/delete.png" Height="20" Width="20"></Image>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Làm tươi" Click="Refresh_Click">
+                                        <MenuItem.Icon>
+                                            <Image Name="Refresh" Source="Assets/refresh.png" Height="20" Width="20"></Image>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                            <DataGrid.ColumnHeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Height" Value="30"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    <Setter Property="BorderBrush" Value="#C8E6C9"/>
+                                    <Setter Property="FontSize" Value="12"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Setter Property="Foreground" Value="#4A148C"/>
+                                    <Setter Property="Background" Value="#1DE9B6"/>
+                                </Style>
+                            </DataGrid.ColumnHeaderStyle>
+                            <DataGrid.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Height" Value="28"/>
+                                    <Setter Property="FontSize" Value="13"/>
+                                    <Setter Property="Foreground" Value="Red"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Color}" Value="True">
+                                            <Setter Property="Foreground" Value="Black"/>
+                                        </DataTrigger>
+
+                                        <Trigger Property="IsSelected"  Value="True">
+                                            <Setter Property="Background" Value="#1DE9B6" />
+                                            <Setter Property="BorderBrush" Value="#1DE9B6"/>
+                                            <Setter Property="BorderThickness" Value="0"/>
+                                        </Trigger>
+
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.CellStyle>
+                            <DataGrid.Columns >
+                                <DataGridTextColumn Width="1*" x:Name="stt" Header="STT" Binding="{Binding Path=STT}">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextAlignment" Value="Center"></Setter>
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Width="3*" x:Name="name" Header="Họ và tên" Binding="{Binding Path=HoTen}">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextAlignment" Value="Center"></Setter>
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Width="2*" x:Name="maSo" Header="Biển kiểm soát" Binding="{Binding Path=MaSo}">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextAlignment" Value="Center"></Setter>
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Width="2*" x:Name="dept" Header="Khoa / Lớp" Binding="{Binding Path=KhoaLop}">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextAlignment" Value="Center"></Setter>
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Width="1.5*" x:Name="author" Header="Phân quyền" Binding="{Binding Path=PhanQuyen}">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextAlignment" Value="Center"></Setter>
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Width="3*" x:Name="reason" Header="Lý do cấp tài khoản" Binding="{Binding Path=LyDo}">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextAlignment" Value="Center"></Setter>
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Width="2*" x:Name="status" Header="Trạng thái" Binding="{Binding Path=DaXuLy}">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextAlignment" Value="Center"></Setter>
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+
+                </TabItem>
+                <TabItem Header="Trình tạo mã thẻ nạp">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height=".5*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <TextBlock Text="TRÌNH TẠO MÃ THẺ NẠP" Foreground="#FF8B3299" FontSize="16" FontFamily="Tahoma" FontWeight="DemiBold" Margin="15,25,0,0"></TextBlock>
+                            <TextBlock Text=">> Chọn số lượng và mệnh giá" Foreground="#FF8B3299" FontSize="12" FontFamily="Tahoma" FontWeight="Light" FontStyle="Italic" Margin="218,29,0,0"></TextBlock>
+                            <Rectangle Width="372" Height="5" Fill="#FF8B3299" Margin="15,50,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></Rectangle>
+                            <Rectangle Width="372" Height="1" Fill="#FF8B3299" Margin="15,58,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></Rectangle>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="15">
+                                <TextBlock Text="Chọn số lượng:" FontSize="16" FontWeight="DemiBold" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                <ComboBox Name="cbbSoLuongMaTheTao" FontSize="18" FontWeight="DemiBold" Width="120" Height="40" Margin="10,0"/>
+                                <TextBlock Text="Mệnh giá:" FontSize="16" FontWeight="DemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0"/>
+                                <ComboBox Name="cbbMenhGiaTheTao" FontSize="18" FontWeight="DemiBold" Width="160" Height="40" Margin="10,0,15,0"/>
+                                <Button Name="btnTaoMaTheNap" Content="Tạo mã" Width="80" Height="40" Click="BtnTaoMaTheNap_Click"/>
+                                <Button Name="btnInMaTheNap" Content="Xuất bản" IsEnabled="False" Width="90" Height="40" Margin="15,0,0,0" Click="BtnInMaTheNap_Click"/>
+                            </StackPanel>
+                        </Grid>
+                        <Grid Grid.Row="1" Margin="15,0">
+                            <DataGrid x:Name="dgTaoMa" CanUserResizeColumns="False" CanUserResizeRows="False" IsReadOnly="True" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Width="Auto">
+                                <DataGrid.ColumnHeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="Height" Value="30"/>
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                        <Setter Property="BorderBrush" Value="#C8E6C9"/>
+                                        <Setter Property="FontSize" Value="12"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                        <Setter Property="Foreground" Value="#4A148C"/>
+                                        <Setter Property="Background" Value="#1DE9B6"/>
+                                    </Style>
+                                </DataGrid.ColumnHeaderStyle>
+                                <DataGrid.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Setter Property="Height" Value="28"/>
+                                        <Setter Property="FontSize" Value="13"/>
+                                        <Setter Property="Foreground" Value="Red"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding TrangThai}" Value="Đã phát hành">
+                                                <Setter Property="Foreground" Value="Blue"/>
+                                            </DataTrigger>
+
+                                            <Trigger Property="IsSelected"  Value="True">
+                                                <Setter Property="Background" Value="#1DE9B6" />
+                                                <Setter Property="BorderBrush" Value="#1DE9B6"/>
+                                                <Setter Property="BorderThickness" Value="0"/>
+                                            </Trigger>
+
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.CellStyle>
+                                <DataGrid.Columns >
+                                    <DataGridTextColumn Width="0.5*" Header="STT" Binding="{Binding Path=STT}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"></Setter>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Width="2*" Header="Mã Sê-ri" Binding="{Binding Path=SeRi}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"></Setter>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Width="2*" Header="Mã thẻ nạp" Binding="{Binding Path=MaTheNap}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"></Setter>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Width="1.5*" Header="Mệnh giá" Binding="{Binding Path=MenhGia}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"></Setter>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Width="1*" Header="Trạng thái" Binding="{Binding Path=TrangThai}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"></Setter>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                        </Grid>
+                        <Grid Grid.Row="2" Height="80" VerticalAlignment="Bottom">
+                            <TextBlock Name="tblTrangThaiInMaTheNap" Text="Đang xuất bản. Vui lòng đợi..." Foreground="#FF035791" FontWeight="DemiBold" Margin="15" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Collapsed"/>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                <Button Name="btnHuyTaoMaTheNap" Content="Hủy" Width="80" Margin="10,0" Background="#FFBD245C" BorderBrush="#FF871A29" Click="BtnHuyTaoMaTheNap_Click"/>
+                                <Button Name="btnPhatHanhMaTheNap" Content="Phát hành" Width="110" Margin="10,0,15,0" Background="#FF1E916C" BorderBrush="#FF0D4F37" Click="BtnPhatHanhMaTheNap_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+
+                </TabItem>
+                <TabItem Header="Thanh toán">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="270"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0" Background="#FFE4E4E4">
+                            <StackPanel Orientation="Horizontal" Height="100" VerticalAlignment="Top" Background="#FFE4E4E4">
+                                <StackPanel.Effect>
+                                    <DropShadowEffect BlurRadius="30" ShadowDepth="1"/>
+                                </StackPanel.Effect>
+                                <Border Name="borderTTTrangThai" Width="10" Height="10" HorizontalAlignment="Right" Margin="15" Background="Green" CornerRadius="15" VerticalAlignment="Center"/>
+                                <TextBlock Name="tblTTHoTen" Text="{Binding ElementName=tblTTProfileHoTen,Path=Text}" FontSize="28" VerticalAlignment="Center"/>
+                                <!--<Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Margin="15 15 10 15">
+                                    <materialDesign:PackIcon Kind="Add"/>
+                                </Button>
+                                <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Margin="15 15 10 15">
+                                    <materialDesign:PackIcon Kind="Minus"/>
+                                </Button>-->
+                            </StackPanel>
+                            <ScrollViewer Name="scrollViewerQuanLyTheTT" Margin="0 100" Panel.ZIndex="0">
+                                <StackPanel Name="stackPanelMessageTT" VerticalAlignment="Bottom">
+                                    <!--<local:UserControlMessageReceived HorizontalAlignment="Left"/>
+                                    <local:UserControlMessageSent HorizontalAlignment="Right"/>-->
+                                </StackPanel>
+                            </ScrollViewer>
+                            <Border Background="#FFCDAFE6" VerticalAlignment="Bottom">
+                                <Grid Margin="0 10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="70"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Name="txtMessageTT" materialDesign:HintAssist.Hint="Nhập nội dung" Grid.Column="0" MaxHeight="80" TextWrapping="Wrap" Margin="5" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+                                    <Button Name="btnSendTT" ToolTip="Gửi" Grid.Column="3" VerticalAlignment="Bottom" Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Click="BtnSendTT_Click">
+                                        <materialDesign:PackIcon Kind="Send"/>
+                                    </Button>
+                                    <Button Name="btnDinhKemTT" ToolTip="Yêu cầu hủy tài khoản" Grid.Column="2" Background="{x:Null}" VerticalAlignment="Bottom" Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
+                                        <materialDesign:PackIcon Kind="DollarOff" Foreground="{StaticResource PrimaryHueDarkBrush}"/>
+                                    </Button>
+                                    <Button Name="btnHanhDongTT" ToolTip="Chọn hành động" Background="{x:Null}" Grid.Column="1" VerticalAlignment="Bottom" Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Click="BtnHanhDongTT_Click">
+                                        <materialDesign:PackIcon Kind="Money" Foreground="{StaticResource PrimaryHueDarkBrush}"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                        <StackPanel Grid.Column="1" Background="White">
+                            <Button Name="btnCloseDetailTT" HorizontalAlignment="Right" Margin="10" Style="{StaticResource MaterialDesignFlatButton}" Click="BtnCloseDetail_Click">
+                                <materialDesign:PackIcon Kind="Close"/>
+                            </Button>
+
+                            <Border Width="150" Height="150" CornerRadius="80" BorderThickness="1" BorderBrush="Gray">
+                                <Border.Background>
+                                    <ImageBrush x:Name="imageProfileDetailTT" ImageSource="Assets/profile-icon.png"/>
+                                </Border.Background>
+                            </Border>
+
+                            <TextBlock Name="tblTTProfileHoTen" HorizontalAlignment="Center" Margin="0 10 0 0" Foreground="Gray" FontSize="18" FontWeight="Bold"/>
+                            <TextBlock Name="tblTTBienKiemSoat" FontSize="13" Foreground="Gray" HorizontalAlignment="Center" Opacity="0.8"/>
+                            <TextBlock Name="tblTTProfileAuthorDetail" Text="Nhà phát triển" FontSize="8" Foreground="Gray" HorizontalAlignment="Center" Opacity="0.8"/>
+
+                            <StackPanel Margin="20">
+                                <StackPanel Orientation="Horizontal" Margin="0 3">
+                                    <materialDesign:PackIcon Kind="Location" Foreground="Gray"/>
+                                    <TextBlock Name="tblTTAddress" Text="Khoa Điện tử" Margin="10 0" Foreground="Gray"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0 3">
+                                    <materialDesign:PackIcon Kind="CardBulletedOutline" Foreground="Gray"/>
+                                    <TextBlock Name="tblTTMaTheGui" Text="CE126933728E6D" Margin="10 0" Foreground="Gray"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0 3">
+                                    <materialDesign:PackIcon Kind="Dollar" Foreground="Gray"/>
+                                    <TextBlock Name="tblTTSoDuKhaDung" Text="500.000 VNĐ" Margin="10 0" Foreground="Gray"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <TextBlock Text="HOẠT ĐỘNG GẦN ĐÂY" Margin="20 0" Foreground="Gray"/>
+                            <StackPanel Name="stackPanelttProfileHoatDongGanDay" Orientation="Horizontal" Margin="20 0">
+                                <Border Width="50" Height="50" CornerRadius="30" Margin="5">
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="Assets/prof.png"/>
+                                    </Border.Background>
+                                </Border>
+                                <Border Width="50" Height="50" CornerRadius="30" Margin="5">
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="Assets/prof.png"/>
+                                    </Border.Background>
+                                </Border>
+                                <Border Width="50" Height="50" CornerRadius="30" Margin="5">
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="Assets/prof.png"/>
+                                    </Border.Background>
+                                </Border>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Quản lý thẻ">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="270"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0" Background="#FFE4E4E4">
+                            <StackPanel Panel.ZIndex="1" Orientation="Horizontal" Height="100" VerticalAlignment="Top" Background="#FFE4E4E4">
+                                <StackPanel.Effect>
+                                    <DropShadowEffect BlurRadius="30" ShadowDepth="1"/>
+                                </StackPanel.Effect>
+                                <Border Width="10" Height="10" HorizontalAlignment="Right" Margin="15" Background="Green" CornerRadius="15" VerticalAlignment="Center"/>
+                                <TextBlock Name="tblDangGui" Text="Đang gửi" FontSize="18" VerticalAlignment="Center"/>
+                                <TextBlock Name="tblDonGia" Text="{Binding DonGia}" FontWeight="DemiBold" FontSize="18" Foreground="#FF4622A8" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                <TextBlock Name="tblDonVi" Text="(VNĐ/lượt)" FontStyle="Italic" FontSize="18" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                <Button Name="btnTangGia" ToolTip="Tăng" Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Margin="15 15 0 15" Click="BtnTangGia_Click">
+                                    <materialDesign:PackIcon Kind="Add"/>
+                                </Button>
+                                <Button Name="btnGiamGia" ToolTip="Giảm" Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Margin="10 15 10 15" Click="BtnGiamGia_Click">
+                                    <materialDesign:PackIcon Kind="Minus"/>
+                                </Button>
+                                <Button Name="btnLuuGia" Margin="15 15 10 15" Width="60" Height="40" ToolTip="Lưu lại" Click="BtnLuuGia_Click" Background="#FF30ACBF" BorderBrush="#FF1E9191">
+                                    <materialDesign:PackIcon Kind="ContentSaveSettingsOutline" Width="32" Height="32"/>
+                                </Button>
+                            </StackPanel>
+                            <ScrollViewer Name="scrollViewerQuanLyThe" Margin="0 100" Panel.ZIndex="0">
+                                <StackPanel Name="stackPanelMessage" VerticalAlignment="Bottom">
+                                    <!--<local:UserControlMessageReceived HorizontalAlignment="Left"/>
+                                <local:UserControlMessageSent HorizontalAlignment="Right"/>-->
+                                </StackPanel>
+                            </ScrollViewer>
+                            <Border Background="#FFCDAFE6" VerticalAlignment="Bottom">
+                                <Grid Margin="0 10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="70"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Name="txtMessage" materialDesign:HintAssist.Hint="Nhập nội dung" Grid.Column="0" MaxHeight="80" TextWrapping="Wrap" Margin="5" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+                                    <Button Name="btnSend" ToolTip="Gửi" Grid.Column="3" VerticalAlignment="Bottom" Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Click="BtnSend_Click">
+                                        <materialDesign:PackIcon Kind="Send"/>
+                                    </Button>
+                                    <Button Name="btnMauHuyDangKy" ToolTip="Mẫu hủy đăng ký" Grid.Column="2" Background="{x:Null}" VerticalAlignment="Bottom" Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
+                                        <materialDesign:PackIcon Kind="DollarOff" Foreground="{StaticResource PrimaryHueDarkBrush}"/>
+                                    </Button>
+                                    <Button Name="btnMauNapThe" ToolTip="Mẫu nạp thẻ" Background="{x:Null}" Grid.Column="1" VerticalAlignment="Bottom" Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Click="BtnMauNapThe_Click">
+                                        <materialDesign:PackIcon Kind="Money" Foreground="{StaticResource PrimaryHueDarkBrush}"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                        <StackPanel Grid.Column="1" Background="White">
+                            <Button Name="btnCloseDetail" HorizontalAlignment="Right" Margin="10" Style="{StaticResource MaterialDesignFlatButton}" Click="BtnCloseDetail_Click">
+                                <materialDesign:PackIcon Kind="Close"/>
+                            </Button>
+
+                            <Border Width="150" Height="150" CornerRadius="80" BorderThickness="1" BorderBrush="Gray">
+                                <Border.Background>
+                                    <ImageBrush x:Name="imageProfileDetail" ImageSource="Assets/profile-icon.png"/>
+                                </Border.Background>
+                            </Border>
+
+                            <TextBlock Name="tblProfileNameDetail" HorizontalAlignment="Center" Margin="0 10 0 0" Foreground="Gray" FontSize="18" FontWeight="Bold"/>
+                            <TextBlock Name="tblBienKiemSoat" FontSize="13" Foreground="Gray" HorizontalAlignment="Center" Opacity="0.8"/>
+                            <TextBlock Name="tblProfileAuthorDetail" Text="Nhà phát triển" FontSize="8" Foreground="Gray" HorizontalAlignment="Center" Opacity="0.8"/>
+
+                            <StackPanel Margin="20">
+                                <StackPanel Orientation="Horizontal" Margin="0 3">
+                                    <materialDesign:PackIcon Kind="Location" Foreground="Gray"/>
+                                    <TextBlock Name="tblAddress" Text="Khoa Điện tử" Margin="10 0" Foreground="Gray"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0 3">
+                                    <materialDesign:PackIcon Kind="CardBulletedOutline" Foreground="Gray"/>
+                                    <TextBlock Name="tblMaTheGui" Text="CE126933728E6D" Margin="10 0" Foreground="Gray"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0 3">
+                                    <materialDesign:PackIcon Kind="Dollar" Foreground="Gray"/>
+                                    <TextBlock Name="tblTaiKhoanKhaDung" Text="500.000 VNĐ" Margin="10 0" Foreground="Gray"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <TextBlock Text="HOẠT ĐỘNG GẦN ĐÂY" Margin="20 0" Foreground="Gray"/>
+                            <StackPanel Name="stackPanelProfileHoatDongGanDay" Orientation="Horizontal" Margin="20 0">
+                                <Border Width="50" Height="50" CornerRadius="30" Margin="5">
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="Assets/prof.png"/>
+                                    </Border.Background>
+                                </Border>
+                                <Border Width="50" Height="50" CornerRadius="30" Margin="5">
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="Assets/prof.png"/>
+                                    </Border.Background>
+                                </Border>
+                                <Border Width="50" Height="50" CornerRadius="30" Margin="5">
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="Assets/prof.png"/>
+                                    </Border.Background>
+                                </Border>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Cài đặt">
+                    <Grid Background="#FFE6E4E4">
+                        <TextBlock Text="CÀI ĐẶT" Foreground="#FF8B3299" FontSize="16" FontFamily="Tahoma" FontWeight="DemiBold" Margin="15,25,0,0"></TextBlock>
+                        <TextBlock Text=">> Thiết lập các thông số" Foreground="#FF8B3299" FontSize="12" FontFamily="Tahoma" FontWeight="Light" FontStyle="Italic" Margin="88,29,0,0"></TextBlock>
+                        <Rectangle Width="215" Height="5" Fill="#FF8B3299" Margin="15,50,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></Rectangle>
+                        <Rectangle Width="215" Height="1" Fill="#FF8B3299" Margin="15,58,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></Rectangle>
+                        <Grid Margin="15,80" Background="#FF78F7C3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="2.5*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="CỔNG COM CỬA VÀO:" FontSize="16" FontWeight="DemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15,0"/>
+                            <ComboBox Name="cbbCongComCuaVao" Grid.Row="0" Grid.Column="1" Margin="10"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="CỔNG COM CỬA RA :" FontSize="16" FontWeight="DemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15,0"/>
+                            <ComboBox Name="cbbCongComCuaRa" Grid.Row="1" Grid.Column="1" Margin="10"/>
+                        </Grid>
+                        <Grid Height="80" VerticalAlignment="Bottom">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                <Button Name="btnHuyCaiDat" Content="Hủy" Width="80" Margin="10,0" Background="#FFBD245C" BorderBrush="#FF871A29" Click="BtnHuyCaiDat_Click"/>
+                                <Button Name="btnLuuCaiDat" Content="Lưu" Width="80" Margin="10,0,15,0" Background="#FF1E916C" BorderBrush="#FF0D4F37" Click="BtnLuuCaiDat_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+        <StackPanel Grid.Row="1" Background="#FFA293C5" Visibility="{Binding IsShowMenuVisibility,Converter={StaticResource BoolToVisibilityConverterInv}}">
+            <StackPanel Orientation="Horizontal" Background="#FFE9D7FF">
+                <Image Width="210" Height="80" Source="Assets/feelogo2.png" Margin="2"/>
+                <Button Style="{StaticResource MaterialDesignFlatButton}">
+                    <materialDesign:PackIcon Kind="PlusCircle" Width="24" Height="24"/>
+                </Button>
+            </StackPanel>
+            <TextBox Margin="20 10" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="TÌM KIẾM" Foreground="White"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Style="{StaticResource MaterialDesignFlatButton}" Grid.Column="0">
+                    <materialDesign:PackIcon Kind="History" Foreground="White"/>
+                </Button>
+                <Button Style="{StaticResource MaterialDesignFlatButton}" Grid.Column="1">
+                    <materialDesign:PackIcon Kind="People" Foreground="White"/>
+                </Button>
+                <Button Style="{StaticResource MaterialDesignFlatButton}" Grid.Column="2">
+                    <materialDesign:PackIcon Kind="Contacts" Foreground="White"/>
+                </Button>
+                <Button Style="{StaticResource MaterialDesignFlatButton}" Grid.Column="3">
+                    <materialDesign:PackIcon Kind="Archive" Foreground="White"/>
+                </Button>
+            </Grid>
+            <ListView>
+                <ListViewItem HorizontalAlignment="Stretch">
+                    <Grid HorizontalAlignment="Center" Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="50*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Width="40" Height="40" CornerRadius="25" BorderBrush="White" BorderThickness="0.6">
+                            <Border.Background>
+                                <ImageBrush ImageSource="Assets/prof.png"/>
+                            </Border.Background>
+                        </Border>
+                        <Border Width="10" Height="10" VerticalAlignment="Bottom" Margin="5" HorizontalAlignment="Right" CornerRadius="15" Background="LightGreen"/>
+
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="Nguyễn Thị Huyền" Margin="10 0"/>
+                            <TextBlock Text="K125520207029" Margin="10 0" TextTrimming="CharacterEllipsis" Opacity="0.6" FontSize="11"/>
+                        </StackPanel>
+
+                        <Border Grid.Column="2" Width="20" Height="20" CornerRadius="15" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
+                            <TextBlock FontSize="11" Text="2" Foreground="{StaticResource PrimaryHueDarkBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </Grid>
+                </ListViewItem>
+            </ListView>
+        </StackPanel>
+        <Grid Grid.Row="1" Visibility="{Binding IsShowMenuVisibility,Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="LightGray" Offset="1"/>
+                    <GradientStop Color="#FFE6E6E6"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="20" Color="#FFDEDEDE" RenderingBias="Quality" ShadowDepth="1"/>
+            </Grid.Effect>
+
+            <Grid Name="gridLogo" Background="#FFE9D7FF">
+                <StackPanel Orientation="Horizontal">
+                    <Image Name="imageLogo" Stretch="Fill" Source=".\Assets\feelogo2.png" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Left"></Image>
+                    <TextBlock Text="FEE TNUT" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="WS Simple Gallifreyan" FontWeight="DemiBold" Foreground="#FF161680" FontSize="16"/>
+                </StackPanel>
+            </Grid>
+
+            <StackPanel Grid.Row="1">
+                <Button Name="btnThongKe" Margin="10" Background="#FF8522BD" BorderBrush="#FF8522BD" Click="BtnThongKe_Click">
+                    <Grid Width="150">
+                        <materialDesign:PackIcon Kind="ChartAreaspline" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" Text="THỐNG KÊ" FontFamily="Champagne &amp; Limousines"/>
+                    </Grid>
+                </Button>
+
+                <Button Visibility="{Binding QuanTriVien,Converter={StaticResource BooleanToVisibilityConverter}}" Name="btnQuanLyTaiKhoan" Margin="10" Background="#FF8522BD" BorderBrush="#FF8522BD" Click="BtnQuanLyTaiKhoan_Click">
+                    <Grid Width="150">
+                        <materialDesign:PackIcon Kind="Account" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" Text="TÀI KHOẢN" FontFamily="Champagne &amp; Limousines"/>
+                    </Grid>
+                </Button>
+
+                <Button Visibility="{Binding QuanTriVien,Converter={StaticResource BooleanToVisibilityConverter}}" Name="btnTrinhTaoMaTheNap" Margin="10" Background="#FF8522BD" BorderBrush="#FF8522BD" Click="BtnTrinhTaoMaTheNap_Click">
+                    <Grid Width="150">
+                        <materialDesign:PackIcon Kind="ContentPaste" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" Text="TẠO MÃ THẺ NẠP" FontFamily="Champagne &amp; Limousines"/>
+                    </Grid>
+                </Button>
+
+                <Button Name="btnThanhToan" Margin="10" Background="#FF8522BD" BorderBrush="#FF8522BD" Click="BtnThanhToan_Click">
+                    <Grid Width="150">
+                        <materialDesign:PackIcon Kind="Coin" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" Text="THANH TOÁN" FontFamily="Champagne &amp; Limousines"/>
+                    </Grid>
+                </Button>
+
+                <!--<Button Margin="10" Background="#FF8522BD" BorderBrush="#FF8522BD">
+                    <Grid Width="150">
+                        <materialDesign:PackIcon Kind="BusinessCard" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" Text="QUẢN LÝ THẺ" FontFamily="Champagne &amp; Limousines"/>
+                    </Grid>
+                </Button>-->
+
+                <Button Visibility="{Binding QuanTriVien,Converter={StaticResource BooleanToVisibilityConverter}}" Name="btnCaiDat" Margin="10" Background="#FF8522BD" BorderBrush="#FF8522BD" Click="BtnCaiDat_Click">
+                    <Grid Width="150">
+                        <materialDesign:PackIcon Kind="Settings" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" Text="CÀI ĐẶT" FontFamily="Champagne &amp; Limousines"/>
+                    </Grid>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid x:Name="GridBarraTitulo" Grid.ColumnSpan="2" Background="#FF8522BD" MouseDown="GridBarraTitulo_MouseDown">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <materialDesign:PackIcon Kind="CastEducation" VerticalAlignment="Center" Foreground="White" Margin="5,0"/>
+                <TextBlock HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center" Text="HỆ THỐNG QUẢN LÝ BÃI ĐỖ XE" FontFamily="Champagne &amp; Limousines" Foreground="White"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Name="btnThongBao" ToolTip="Không có thông báo để hiển thị..." Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White">
+                    <materialDesign:PackIcon Kind="Bell"/>
+                </Button>
+                <Button Name="btnAccount" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White">
+                    <materialDesign:PackIcon Kind="Account"/>
+                </Button>
+                <Button x:Name="btnLogOut" ToolTip="Đăng xuất" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="BtnLogOut_Click">
+                    <materialDesign:PackIcon Kind="Power"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

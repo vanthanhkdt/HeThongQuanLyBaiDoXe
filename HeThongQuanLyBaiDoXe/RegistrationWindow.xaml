@@ -1,0 +1,116 @@
+﻿<Window x:Class="HeThongQuanLyBaiDoXe.RegistrationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HeThongQuanLyBaiDoXe"
+        mc:Ignorable="d"
+        xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Login" Height="400" Width="600" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded">
+    <Window.Resources>
+        <local:PathStringToBitmapImageConverter x:Key="PathStringToBitmapImageConverter"/>
+        <local:MoneyConverter x:Key="MoneyConverter"/>
+        <DataTemplate x:Key="moneyTemplate" DataType="{x:Type ComboBox}">
+            <TextBlock Text="{Binding Value,Converter={StaticResource MoneyConverter}}" Foreground="Black"/>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+        <Rectangle RadiusY="8" RadiusX="8" Fill="White"/>
+        <Image Source="Assets/tnutimg.jpg" Margin="310,0,0,0" Stretch="UniformToFill"/>
+        <Rectangle Margin="310,0,0,0">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#CC935E12" Offset="1"/>
+                    <GradientStop Color="#CCEA4646"/>
+                    <GradientStop Color="#CCB89128" Offset="0.566"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <StackPanel Margin="20,10,290,10">
+            <Label Content="Đăng ký" FontFamily="Segoe UI Black" FontSize="24" Margin="0,10" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap" Foreground="#707070"><Run Text="Nếu bạn đã có tài khoản, vui lòng "/></TextBlock>
+                <Button Name="btnLogin" Content="Đăng nhập" Cursor="Hand" VerticalAlignment="Center" HorizontalAlignment="Right" Click="btnLogin_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <TextBlock TextDecorations="Underline">
+                    <ContentPresenter />
+                            </TextBlock>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Foreground" Value="#FF2468AC" />
+                            <Setter Property="FontSize" Value="12" />
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Foreground" Value="Red" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+            </StackPanel>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap" Foreground="#707070"><Run Text="để sử dụng hệ thống."/></TextBlock>
+            <!--Content-->
+            <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                <materialDesign:PackIcon Kind="Account" VerticalAlignment="Center" Foreground="#707070"/>
+                <TextBox Name="txtName" materialDesign:HintAssist.Hint="Họ và tên" Width="120" Margin="5,0,0,0"/>
+                <Image Name="imageViewer" Width="30" Height="30" Stretch="Fill" Margin="5,0">
+                    <Image.Source>
+                        <Binding Path="SrcImage" Converter="{StaticResource PathStringToBitmapImageConverter}">
+                            <Binding.TargetNullValue>
+                                <BitmapImage UriSource="/Assets/DeafultProfile.png" />
+                            </Binding.TargetNullValue>
+                        </Binding>
+                    </Image.Source>
+                </Image>
+                <Button Name="uploadProfileImage" Content="Tải ảnh lên..." VerticalAlignment="Center" HorizontalAlignment="Right" Width="90" Height="30" Padding="0" Click="UploadProfileImage_Click" Margin="0,0,0,0"/>
+            </StackPanel>
+            <StackPanel Margin="0,0" Orientation="Horizontal">
+                <materialDesign:PackIcon Kind="CardBulleted" VerticalAlignment="Center" Foreground="#707070"/>
+                <TextBox Name="txtBienKiemSoat" materialDesign:HintAssist.Hint="Biển kiểm soát" Width="120" Margin="5,0"/>
+                <TextBox Name="txtCode" materialDesign:HintAssist.Hint="Mã thẻ gửi" Width="120" Margin="5,0"/>
+            </StackPanel>
+            <StackPanel Margin="0,0" Orientation="Horizontal">
+                <materialDesign:PackIcon Kind="Office" VerticalAlignment="Center" Foreground="#707070"/>
+                <TextBox Name="txtDep" materialDesign:HintAssist.Hint="Lớp / Khoa" Width="120" Margin="5,0"/>
+                <ComboBox Name="cbbDaNop" materialDesign:HintAssist.Hint="Số tiền nộp trước" Width="120" Margin="5,0" Background="White"/>
+                <!--<TextBox Name="txtDaNop" materialDesign:HintAssist.Hint="Số tiền nộp trước" Width="120" Margin="5,0"/>-->
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Kind="Key" VerticalAlignment="Center" Foreground="#707070"/>
+                <PasswordBox Name="pwPassword" materialDesign:HintAssist.Hint="Mật khẩu" Width="250" Margin="5,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Kind="KeyChange" VerticalAlignment="Center" Foreground="#707070"/>
+                <PasswordBox Name="pwAcceptPassword" materialDesign:HintAssist.Hint="Xác nhận mật khẩu" Width="250" Margin="5,0"/>
+            </StackPanel>
+            <StackPanel Margin="0,0" Orientation="Horizontal">
+                <materialDesign:PackIcon Kind="Information" VerticalAlignment="Center" Foreground="#707070"/>
+                <TextBox Name="txtReason" materialDesign:HintAssist.Hint="Lý do cấp tài khoản" Width="250" Margin="5,0"/>
+            </StackPanel>
+            <Grid>
+                <StackPanel Margin="0,10" Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Settings" VerticalAlignment="Center" Foreground="#707070"/>
+                    <ComboBox Name="cbbPhanQuyen" materialDesign:HintAssist.Hint="Phân quyền" Width="250" Margin="5,0" Background="White"/>
+                </StackPanel>
+            </Grid>
+            <TextBlock Height="20" x:Name ="tblErrorMessage" OpacityMask="Crimson" Foreground="#FFE5572C" />
+            <Button Name="btnRegister" HorizontalAlignment="Center" Content="ĐĂNG KÝ" FontFamily="Impact" FontSize="18" Width="120" Background="#FF307CD6" BorderBrush="#FF307CD6" Margin="0" Click="btnRegister_Click"/>
+        </StackPanel>
+        <Button Name="btnThoat" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" Style="{StaticResource MaterialDesignFlatButton}" Click="BtnThoat_Click">
+            <materialDesign:PackIcon Kind="Close"/>
+        </Button>
+        <StackPanel Margin="310,50,0,50">
+            <TextBlock Text="FEE TNUT" Foreground="White" HorizontalAlignment="Center" FontSize="48" FontFamily="Champagne &amp; Limousines" FontWeight="Bold"/>
+            <TextBlock Text="Hệ thống Quản lý bãi đỗ xe tự động" Foreground="White" HorizontalAlignment="Center" Width="280" FontSize="24" FontFamily="Champagne &amp; Limousines" TextWrapping="Wrap" TextAlignment="Center" Margin="0,50,0,0"/>
+            <TextBlock Text="GVHD: ThS. Nguyễn Thị Hải Ninh" Foreground="White" FontSize="18" FontFamily="Champagne &amp; Limousines" TextWrapping="Wrap" TextAlignment="Left" Margin="10,30,10,5"/>
+            <TextBlock Text="SVTH : Nguyễn Thị Huyền" Foreground="White" FontSize="18" FontFamily="Champagne &amp; Limousines" TextWrapping="Wrap" TextAlignment="Left" Margin="10,5"/>
+            <TextBlock Text="Nguyễn Thị Nhã" Foreground="White" FontSize="18" FontFamily="Champagne &amp; Limousines" TextWrapping="Wrap" TextAlignment="Left" Margin="67,0,10,0"/>
+        </StackPanel>
+    </Grid>
+</Window>

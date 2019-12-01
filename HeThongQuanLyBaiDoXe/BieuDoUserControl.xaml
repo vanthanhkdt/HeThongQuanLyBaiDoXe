@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="HeThongQuanLyBaiDoXe.BieuDoUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HeThongQuanLyBaiDoXe"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             mc:Ignorable="d" 
+             FontFamily="Tahoma"
+             d:DesignHeight="350" d:DesignWidth="600">
+    <Grid>
+        <lvc:CartesianChart Series="{Binding BienDongGuiXeSeriesCollection}" LegendLocation="None" Foreground="White" Background="#FF01011A">
+            <lvc:CartesianChart.AxisY>
+                <lvc:AxesCollection>
+                    <lvc:Axis Title="Lượt gửi" LabelFormatter="{Binding YFormatter}"></lvc:Axis>
+                </lvc:AxesCollection>
+            </lvc:CartesianChart.AxisY>
+            <lvc:CartesianChart.AxisX>
+                <lvc:AxesCollection>
+                    <lvc:Axis Title="Ngày" Labels="{Binding XLabels}"></lvc:Axis>
+                </lvc:AxesCollection>
+            </lvc:CartesianChart.AxisX>
+        </lvc:CartesianChart>
+    </Grid>
+</UserControl>
