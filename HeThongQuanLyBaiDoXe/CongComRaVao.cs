@@ -41,6 +41,11 @@ namespace HeThongQuanLyBaiDoXe
             return false;
         }
 
+        /// <summary>
+        /// Not used
+        /// </summary>
+        /// <param name="duLieuGui"></param>
+        /// <returns></returns>
         public bool Gui(string duLieuGui)
         {
             try

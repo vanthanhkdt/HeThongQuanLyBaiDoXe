@@ -234,8 +234,8 @@ namespace HeThongQuanLyBaiDoXe
                 case TableName.Registration:
                     table = "TBRegistration";
                     break;
-                case TableName.PhanQuyen:
-                    table = "TBPhanQuyen";
+                case TableName.TheTamThoi:
+                    table = "TBTheTamThoi";
                     break;
                 case TableName.CardList:
                     table = "TBCardList";
@@ -296,8 +296,8 @@ namespace HeThongQuanLyBaiDoXe
                     case TableName.Registration:
                         table = "TBRegistration";
                         break;
-                    case TableName.PhanQuyen:
-                        table = "TBPhanQuyen";
+                    case TableName.TheTamThoi:
+                        table = "TBTheTamThoi";
                         break;
                     default:
                         break;
@@ -353,8 +353,8 @@ namespace HeThongQuanLyBaiDoXe
                     case TableName.Registration:
                         table = "TBRegistration";
                         break;
-                    case TableName.PhanQuyen:
-                        table = "TBPhanQuyen";
+                    case TableName.TheTamThoi:
+                        table = "TBTheTamThoi";
                         break;
                     default:
                         break;
@@ -407,8 +407,8 @@ namespace HeThongQuanLyBaiDoXe
                     case TableName.Registration:
                         table = "TGRegistration";
                         break;
-                    case TableName.PhanQuyen:
-                        table = "TBPhanQuyen";
+                    case TableName.TheTamThoi:
+                        table = "TBTheTamThoi";
                         break;
                     case TableName.CardList:
                         table = "TBCardList";
@@ -453,8 +453,8 @@ namespace HeThongQuanLyBaiDoXe
                 case TableName.Registration:
                     table = "TGRegistration";
                     break;
-                case TableName.PhanQuyen:
-                    table = "TBPhanQuyen";
+                case TableName.TheTamThoi:
+                    table = "TBTheTamThoi";
                     break;
                 default:
                     break;

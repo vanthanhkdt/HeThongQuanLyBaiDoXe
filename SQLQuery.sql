@@ -68,22 +68,23 @@ GO
 USE [DBBaiDoXe]
 GO
 
-/****** Object:  Table [dbo].[TBPhanQuyen]    Script Date: 11/12/2019 12:18:35 AM ******/
+/****** Object:  Table [dbo].[TBTheTamThoi]    Script Date: 12/7/2019 11:29:53 PM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[TBPhanQuyen](
-	[STT] [int] IDENTITY(1,1) NOT NULL,
-	[PhanQuyen] [nvarchar](50) NOT NULL,
-	[MaPhanQuyen] [int] NOT NULL,
- CONSTRAINT [PK_TBPhanQuyen] PRIMARY KEY CLUSTERED 
-(
-	[MaPhanQuyen] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
+CREATE TABLE [dbo].[TBTheTamThoi](
+	[STT] [bigint] IDENTITY(1,1) NOT NULL,
+	[SoThe] [nvarchar](max) NULL,
+	[MaThe] [nvarchar](max) NULL,
+	[DangGui] [bit] NULL,
+	[ThoiGianGuiCuoi] [datetime] NOT NULL,
+	[ThoiGianTraCuoi] [datetime] NOT NULL,
+	[ChoPhepHoatDong] [bit] NULL,
+	[DonGia] [nvarchar](max) NULL
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
 GO
 
@@ -136,4 +137,13 @@ CREATE TABLE [dbo].[TBActivities](
 
 GO
 
-
+INSERT INTO 
+	[DBBaiDoXe].[dbo].[TBUsers]
+	([HoTen],[MaSo],[MatKhau],[KhoaLop],[MaTheGui],[PhanQuyen],[ChoPhepHoatDong],
+	[NguoiThem],[NgayThem],[SoDuKhaDung],[DangGui],
+	[TruyCapLanCuoi],[ThoiGianGuiCuoi],[HinhAnh],[DonGia])
+VALUES
+	(N'Nguyễn Văn A', '98D1-00000', '7FC56270E7A70FA81A5935B72EACBE29',
+    N'K48KĐT.01', '0123456789ABCDEF', '5',
+    '1', 'K125520207029', GETDATE(), '500000', '0',
+    GETDATE(),GETDATE(), null, '6000')

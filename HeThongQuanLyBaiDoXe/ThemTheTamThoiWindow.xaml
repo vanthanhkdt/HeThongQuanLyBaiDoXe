@@ -1,0 +1,56 @@
+﻿<Window x:Class="HeThongQuanLyBaiDoXe.ThemTheTamThoiWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HeThongQuanLyBaiDoXe"
+        mc:Ignorable="d" 
+        xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+        FontFamily="Champagne &amp; Limousines" 
+        Icon="/Assets/insurance-motorcycle-cover-protection-service-maintenance-health-512.png"
+        Title="Thêm mới Thẻ tạm thời"
+        ResizeMode="NoResize" 
+        Height="190" Width="300" 
+        WindowStyle="SingleBorderWindow"
+        WindowStartupLocation="Manual"
+        >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="120*"/>
+
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0"/>
+        <Grid Grid.Row="1">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFFFF8F8" Offset="0"/>
+                    <GradientStop Color="#00BFA5" Offset="1"/>
+                    <GradientStop Color="#FF858585" Offset="0.524"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Column="0" Grid.Row="0">
+                <StackPanel Margin="0,0" Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="CardBulleted" VerticalAlignment="Center" Foreground="#707070"/>
+                    <TextBox Name="txtSoThe" VerticalAlignment="Center" materialDesign:HintAssist.Hint="Số thẻ" Width="260" Margin="5,0"/>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Column="0" Grid.Row="1">
+                <StackPanel Margin="0,0" Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="CardBulleted" VerticalAlignment="Center" Foreground="#707070"/>
+                    <TextBox Name="txtMaThe" VerticalAlignment="Center" materialDesign:HintAssist.Hint="Mã thẻ" Width="260" Margin="5,0"/>
+                </StackPanel>
+            </Grid>
+
+            <Button Grid.Column="0" Grid.Row="2" FontSize="13" FontWeight="DemiBold" Grid.ColumnSpan="2" Content="Thêm" Name="btnThem" Width="86" Height="25" Click="BtnThem_Click"/>
+
+        </Grid>
+    </Grid>
+</Window>

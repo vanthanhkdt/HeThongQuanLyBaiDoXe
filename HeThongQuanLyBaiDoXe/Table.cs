@@ -135,12 +135,25 @@ namespace HeThongQuanLyBaiDoXe
             "TaiKhoanKichHoat",
             "ChoPhepHoatDong"
         };
+
+        /// <summary>
+        /// The Tam Thoi
+        /// </summary>
+        public static string[] TheTamThoi = new[] {//"STT",
+            "SoThe",
+            "MaThe",
+            "DangGui",
+            "ChoPhepHoatDong",
+            "ThoiGianGuiCuoi",
+            "ThoiGianTraCuoi",
+            "DonGia"
+        };
     }
     public enum TableName
     {
         Users=0,
         Registration,
-        PhanQuyen,
+        TheTamThoi,
         CardList,
         Activities
     }

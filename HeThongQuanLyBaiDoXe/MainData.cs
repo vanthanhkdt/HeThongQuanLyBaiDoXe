@@ -102,4 +102,28 @@ namespace HeThongQuanLyBaiDoXe
         public string MenhGia { get; set; }
         public string TrangThai { get; set; }
     }
+
+    public class TheTamThoi
+    {
+        public string STT { get; set; }
+        public string SoThe { get; set; }
+        public string MaThe { get; set; }
+        public string ChoPhepHoatDong { get; set; }
+        public string DangGui { get; set; }
+        public string DonGia { get; set; }
+        public string ThoiGianGuiCuoi { get; set; }
+        public string ThoiGianTraCuoi { get; set; }
+
+        public TheTamThoi(string sTT, string soThe, string maThe, string choPhepHoatDong, string dangGui, string donGia, string thoiGianGuiCuoi, string thoiGianTraCuoi)
+        {
+            STT = sTT;
+            SoThe = soThe;
+            MaThe = maThe;
+            ChoPhepHoatDong = choPhepHoatDong;
+            DangGui = dangGui;
+            DonGia = donGia;
+            ThoiGianGuiCuoi = thoiGianGuiCuoi;
+            ThoiGianTraCuoi = thoiGianTraCuoi;
+        }
+    }
 }

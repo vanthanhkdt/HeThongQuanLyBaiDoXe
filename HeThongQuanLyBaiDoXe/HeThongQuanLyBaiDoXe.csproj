@@ -111,6 +111,9 @@
     </Compile>
     <Compile Include="SQLUtility.cs" />
     <Compile Include="Table.cs" />
+    <Compile Include="ThemTheTamThoiWindow.xaml.cs">
+      <DependentUpon>ThemTheTamThoiWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="BieuDoUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -159,6 +162,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="RegistrationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ThemTheTamThoiWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

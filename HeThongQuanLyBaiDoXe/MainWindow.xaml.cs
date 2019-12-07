@@ -380,6 +380,30 @@ namespace HeThongQuanLyBaiDoXe
                         dgQuanTriTaiKhoan.Items.Insert(0, item);
                     }
                 }
+
+                // Thẻ tạm thời
+                dgTheTamThoi.Items.Clear();
+                table = new DataTable();
+
+                table = sqlUtility.GetDataTable(TableName.TheTamThoi);
+
+                if (table != null)
+                {
+                    dgTheTamThoi.Items.Clear();
+                    for (int i = 0; i < table.Rows.Count; i++)
+                    {
+                        dgTheTamThoi.Items.Add(new TheTamThoi(
+                            (table.Rows[i]["STT"]).ToString(),
+                            (table.Rows[i]["SoThe"]).ToString(),
+                            (table.Rows[i]["MaThe"]).ToString(),
+                            (bool)(table.Rows[i]["ChoPhepHoatDong"]) == true ? "Có" : "Không",
+                            (bool)(table.Rows[i]["DangGui"]) == true ? "Có" : "Không",
+                            (table.Rows[i]["MaThe"]).ToString(),
+                            ((DateTime?)(table.Rows[i]["ThoiGianGuiCuoi"])).HasValue ? DateTime.Now.ToString() : "",
+                            ((DateTime?)(table.Rows[i]["ThoiGianTraCuoi"])).HasValue ? DateTime.Now.ToString() : ""
+                            ));
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -515,7 +539,33 @@ namespace HeThongQuanLyBaiDoXe
 
         }
         #endregion
+        #region Tab The Tam Thoi
+        private void MenuItemThemMoi_Click(object sender, RoutedEventArgs e)
+        {
+            ThemTheTamThoiWindow ttttWindow = new ThemTheTamThoiWindow();
+            ttttWindow.OnThemTheTamThoi += (the) =>
+            {
+                sqlUtility.Insert(TableName.TheTamThoi, Table.TheTamThoi, new[] { the.SoThe, the.MaThe, the.ChoPhepHoatDong, the.DangGui, the.ThoiGianGuiCuoi, the.ThoiGianTraCuoi, the.DonGia });
+            };
+            ttttWindow.ShowDialog();
+            LoadData();
+        }
 
+        private void MenuItemHuyThe_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuItemLamTuoi_Click(object sender, RoutedEventArgs e)
+        {
+            LoadData();
+        }
+
+        private void MenuItemChiTiet_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        #endregion
         #region Tab Quan Ly The
         #region Bien Toan Cuc
         private int donGia = 6000;
@@ -820,7 +870,7 @@ namespace HeThongQuanLyBaiDoXe
             tblProfileAuthorDetail.Text = Table.LayTenPhanQuyenTuMa(user.PhanQuyen);
             tblAddress.Text = user.KhoaLop;
             tblTaiKhoanKhaDung.Text = user.SoDuKhaDung;
-            borderTrangThai.Background = user.DangGui == "True" ?Brushes.Green: Brushes.Gray;
+            borderTrangThai.Background = user.DangGui == "True" ? Brushes.Green : Brushes.Gray;
             tblStatus.Text = user.DangGui == "True" ? "Đang gửi" : "Không gửi";
         }
 
@@ -898,6 +948,10 @@ namespace HeThongQuanLyBaiDoXe
         private void BtnThanhToan_Click(object sender, RoutedEventArgs e)
         {
             this.TabControlSelectedIndex = 3;
+        }
+        private void BtnTheTamThoi_Click(object sender, RoutedEventArgs e)
+        {
+            this.TabControlSelectedIndex = 6;
         }
         private void BtnCaiDat_Click(object sender, RoutedEventArgs e)
         {
@@ -1058,5 +1112,7 @@ namespace HeThongQuanLyBaiDoXe
         {
             MessageBox.Show("Chức năng đang phát triển. Quay lại sau.", "Thông báo");
         }
+
+
     }
 }

@@ -216,3 +216,5 @@ E:\Project\DoAnTotNghiep_Huyen\DoAnTotNghiep_V106\HeThongQuanLyBaiDoXe\obj\Debug
 E:\Project\DoAnTotNghiep_Huyen\DoAnTotNghiep_V106\HeThongQuanLyBaiDoXe\obj\Debug\HeThongQuanLyBaiDoXe.csproj.CopyComplete
 E:\Project\DoAnTotNghiep_Huyen\DoAnTotNghiep_V106\HeThongQuanLyBaiDoXe\obj\Debug\HeThongQuanLyBaiDoXe.exe
 E:\Project\DoAnTotNghiep_Huyen\DoAnTotNghiep_V106\HeThongQuanLyBaiDoXe\obj\Debug\HeThongQuanLyBaiDoXe.pdb
+E:\Project\DoAnTotNghiep_Huyen\DoAnTotNghiep_V106\HeThongQuanLyBaiDoXe\obj\Debug\ThemTheTamThoiWindow.g.cs
+E:\Project\DoAnTotNghiep_Huyen\DoAnTotNghiep_V106\HeThongQuanLyBaiDoXe\obj\Debug\ThemTheTamThoiWindow.baml
