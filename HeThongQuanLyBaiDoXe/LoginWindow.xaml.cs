@@ -25,7 +25,7 @@ namespace HeThongQuanLyBaiDoXe
         public LoginWindow()
         {
             InitializeComponent();
-            sqlUtility = new SQLUtility(@"Data Source = DESKTOP-JM571ID\SQLEXPRESS; Initial Catalog = DBBaiDoXe; User id = doantotnghiepbaidoxe; Password = baidoxe!@#$;");
+            sqlUtility = new SQLUtility();
             RememberUser();
         }
 

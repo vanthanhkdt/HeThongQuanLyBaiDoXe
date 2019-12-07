@@ -42,7 +42,7 @@ namespace HeThongQuanLyBaiDoXe
         {
             InitializeComponent();
             this.DataContext = this;
-            sqlUtility = new SQLUtility(@"Data Source = DESKTOP-JM571ID\SQLEXPRESS; Initial Catalog = DBBaiDoXe; User id = doantotnghiepbaidoxe; Password = baidoxe!@#$;");
+            sqlUtility = new SQLUtility();
 
             TaiPhanQuyen();
             TaiSoTienNopTruoc();
@@ -55,7 +55,8 @@ namespace HeThongQuanLyBaiDoXe
         //LoadAuthorize
         private void TaiPhanQuyen()
         {
-            var tatCaQuyen = sqlUtility.GetDistinct(TableName.PhanQuyen, "PhanQuyen");
+            //var tatCaQuyen = sqlUtility.GetDistinct(TableName.PhanQuyen, "PhanQuyen");
+            var tatCaQuyen = new[] { "NhaPhatTrien", "GiangVien", "SinhVien", "NhanVienBaiXe", "Khach", "QuanTriVien" };
             if (tatCaQuyen.Count() > 0)
             {
                 foreach (var item in tatCaQuyen)
@@ -70,20 +71,7 @@ namespace HeThongQuanLyBaiDoXe
             logInWindow.Show();
             this.Close();
         }
-        private int GetNo()
-        {
-            SQLUtility utilLoadLine = new SQLUtility(@"Data Source = DESKTOP-JM571ID\SQLEXPRESS; Initial Catalog = DBBaiDoXe;");
-            DataTable dt = utilLoadLine.GetDataTable("select MAX(_no) AS maxcount FROM dbo.REGISTER");
-            if (dt.Rows.Count > 0)
-            {
-                if (dt.Rows[0]["maxcount"].ToString() != "")
-                {
-                    return (1 + int.Parse(dt.Rows[0]["maxcount"].ToString()));
-                }
-                return 0;
-            }
-            return 0;
-        }
+       
         private void TaiSoTienNopTruoc()
         {
             int index = 0;
@@ -115,12 +103,11 @@ namespace HeThongQuanLyBaiDoXe
                 txtDep.Focus();
             }
 
-            //else if (Regex.IsMatch(txtID.Text, "[^0-9]+")) // txtmySingleId !
-            //{
-            //    tblErrorMessage.Text = "ID không đúng.";
-            //    txtDep.Select(0, txtDep.Text.Length);
-            //    txtDep.Focus();
-            //}
+            else if (cbbDaNop.SelectedIndex==-1)
+            {
+                tblErrorMessage.Text = "Vui lòng chọn Số tiền nộp trước.";
+                cbbDaNop.Focus();
+            }
             else
             {
                 string name = txtName.Text;

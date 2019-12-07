@@ -7,7 +7,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
         xmlns:MetroChart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"
         mc:Ignorable="d" Height="820" Width="1024" WindowStartupLocation="CenterScreen"
-        Title="Hệ thống Quản lý bãi đỗ xe - TNUT - FEE - Phiên bản 2." Icon="/Assets/insurance-motorcycle-cover-protection-service-maintenance-health-512.png">
+        Title="Hệ thống Quản lý bãi đỗ xe - TNUT - FEE - Phiên bản 3." Icon="/Assets/insurance-motorcycle-cover-protection-service-maintenance-health-512.png">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -104,11 +104,11 @@
         </Grid.RowDefinitions>
         <Grid Grid.Column="1" Grid.Row="1" Background="#FFCFCFCF">
             <TabControl TabStripPlacement="Top" SelectedIndex="{Binding TabControlSelectedIndex}" BorderBrush="Transparent" BorderThickness="0">
-                <TabControl.ItemContainerStyle>
+                <!--<TabControl.ItemContainerStyle>
                     <Style TargetType="{x:Type TabItem}">
                         <Setter Property="Visibility" Value="Collapsed"/>
                     </Style>
-                </TabControl.ItemContainerStyle>
+                </TabControl.ItemContainerStyle>-->
                 <TabItem Header="Thống kê">
                     <Grid Background="#FFCFCFCF">
                         <ScrollViewer>
@@ -489,8 +489,8 @@
                                 <StackPanel.Effect>
                                     <DropShadowEffect BlurRadius="30" ShadowDepth="1"/>
                                 </StackPanel.Effect>
-                                <Border Name="borderTTTrangThai" Width="10" Height="10" HorizontalAlignment="Right" Margin="15" Background="Green" CornerRadius="15" VerticalAlignment="Center"/>
-                                <TextBlock Name="tblTTHoTen" Text="{Binding ElementName=tblTTProfileHoTen,Path=Text}" FontSize="28" VerticalAlignment="Center"/>
+                                <Border Name="borderTrangThaiTT" Width="10" Height="10" HorizontalAlignment="Right" Margin="15" Background="Green" CornerRadius="15" VerticalAlignment="Center"/>
+                                <TextBlock Name="tblTTHoTen" Text="{Binding ElementName=tblTTProfileHoTen,Path=Text}" FontSize="18" VerticalAlignment="Center"/>
                                 <!--<Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Margin="15 15 10 15">
                                     <materialDesign:PackIcon Kind="Add"/>
                                 </Button>
@@ -587,8 +587,8 @@
                                 <StackPanel.Effect>
                                     <DropShadowEffect BlurRadius="30" ShadowDepth="1"/>
                                 </StackPanel.Effect>
-                                <Border Width="10" Height="10" HorizontalAlignment="Right" Margin="15" Background="Green" CornerRadius="15" VerticalAlignment="Center"/>
-                                <TextBlock Name="tblDangGui" Text="Đang gửi" FontSize="18" VerticalAlignment="Center"/>
+                                <Border Name="borderTrangThai" Width="10" Height="10" HorizontalAlignment="Right" Margin="15" Background="Green" CornerRadius="15" VerticalAlignment="Center"/>
+                                <TextBlock Name="tblStatus" Text="Đang gửi" FontSize="18" VerticalAlignment="Center"/>
                                 <TextBlock Name="tblDonGia" Text="{Binding DonGia}" FontWeight="DemiBold" FontSize="18" Foreground="#FF4622A8" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                 <TextBlock Name="tblDonVi" Text="(VNĐ/lượt)" FontStyle="Italic" FontSize="18" VerticalAlignment="Center" Margin="5,0,0,0"/>
                                 <Button Name="btnTangGia" ToolTip="Tăng" Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Margin="15 15 0 15" Click="BtnTangGia_Click">

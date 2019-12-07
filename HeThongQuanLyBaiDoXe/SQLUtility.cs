@@ -36,8 +36,12 @@ namespace HeThongQuanLyBaiDoXe
 
         #endregion
 
-        public string ConnenctionString { get; set; }
+        public string ConnenctionString { get; set; } = @"Data Source = DESKTOP-JM571ID\SQLEXPRESS; Initial Catalog = DBBaiDoXe; User id = doantotnghiepbaidoxe; Password = baidoxe!@#$;";
         private SqlConnection sqlConnection;
+
+        public SQLUtility()
+        {
+        }
 
         public SQLUtility(string connenctionString)
         {

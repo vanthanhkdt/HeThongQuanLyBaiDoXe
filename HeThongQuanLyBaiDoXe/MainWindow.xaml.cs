@@ -63,7 +63,7 @@ namespace HeThongQuanLyBaiDoXe
             ParsePaymentUsers(user);
             this.QuanTriVien = user.PhanQuyen.Equals("5");
             btnAccount.ToolTip = user.HoTen;
-            sqlUtility = new SQLUtility(@"Data Source = DESKTOP-JM571ID\SQLEXPRESS; Initial Catalog = DBBaiDoXe; User id = doantotnghiepbaidoxe; Password = baidoxe!@#$;");
+            sqlUtility = new SQLUtility();
 
             LoadData();
             LayCongCom();
@@ -638,7 +638,7 @@ namespace HeThongQuanLyBaiDoXe
                             var truyCapLanCuoi = "";
                             var guiLanCuoi = "";
                             var hinhAnh = table.Rows[0]["HinhAnh"];
-                            string donGia = "60000";
+                            string donGia = "6000";
 
                             string ketQua = sqlUtility.ApproveUser(hoTen, maSo, matKhau, khoaLop, maTheGui, phanQuyen, choPhepHoatDong,
                                 nguoiThem, ngayThem, soDuKhaDung, dangGui, truyCapLanCuoi, guiLanCuoi, hinhAnh, donGia);
@@ -719,7 +719,7 @@ namespace HeThongQuanLyBaiDoXe
 
         public static ImageSource ByteToBitmapImage(byte[] imageData)
         {
-            if (imageData==null)
+            if (imageData == null)
             {
                 return null;
             }
@@ -800,7 +800,7 @@ namespace HeThongQuanLyBaiDoXe
             var button = sender as Button;
 
             this.IsShowMenuVisibility = true;
-            if (button.Name== "btnCloseDetailTT")
+            if (button.Name == "btnCloseDetailTT")
             {
                 this.TabControlSelectedIndex = 0;
             }
@@ -808,7 +808,7 @@ namespace HeThongQuanLyBaiDoXe
             {
                 this.TabControlSelectedIndex = 1;
             }
-            
+
         }
 
         private void ParseProfileUsers(Users user)
@@ -820,6 +820,8 @@ namespace HeThongQuanLyBaiDoXe
             tblProfileAuthorDetail.Text = Table.LayTenPhanQuyenTuMa(user.PhanQuyen);
             tblAddress.Text = user.KhoaLop;
             tblTaiKhoanKhaDung.Text = user.SoDuKhaDung;
+            borderTrangThai.Background = user.DangGui == "True" ?Brushes.Green: Brushes.Gray;
+            tblStatus.Text = user.DangGui == "True" ? "Đang gửi" : "Không gửi";
         }
 
         private void ParsePaymentUsers(Users user)
@@ -831,6 +833,7 @@ namespace HeThongQuanLyBaiDoXe
             tblTTProfileAuthorDetail.Text = Table.LayTenPhanQuyenTuMa(user.PhanQuyen);
             tblTTAddress.Text = user.KhoaLop;
             tblTTSoDuKhaDung.Text = user.SoDuKhaDung;
+            borderTrangThaiTT.Background = user.DangGui == "True" ? Brushes.Green : Brushes.Gray;
         }
 
         private void ParseProfileRegisters(Registers register)
@@ -866,6 +869,7 @@ namespace HeThongQuanLyBaiDoXe
                         userDaChon = Table.ParseUser(sqlUtility.GetDataTable($"SELECT * FROM [DBBaiDoXe].[dbo].[TBUsers] WHERE MaSo = '{userDaChon.MaSo}' AND ChoPhepHoatDong=1;").Rows[0]);
                         stackPanelMessage.Children.Add(new MessageReceivedUserControl("TNUT-FEE", DateTime.Now.ToString("HH:mm"),
                            $"Nạp thẻ thành công cho tài khoản {userDaChon.HoTen} ({userDaChon.MaSo}).{Environment.NewLine}Số tiền nạp: {DinhDangTien(dataTable.Rows[0]["GiaTri"].ToString())}{Environment.NewLine}Số dư khả dụng: {DinhDangTien(userDaChon.SoDuKhaDung)}"));
+                        ParseProfileUsers(userDaChon);
                     }
                 }
                 else
