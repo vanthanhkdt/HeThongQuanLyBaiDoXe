@@ -142,7 +142,7 @@
                                             <TextBlock Name="tblTiLeXeDangGui" Text="85.6" FontFamily="Champagne &amp; Limousines" VerticalAlignment="Center" Foreground="Gray" FontSize="50"/>
                                             <TextBlock Text="%" FontFamily="Champagne &amp; Limousines" Margin="0 5" Foreground="Gray" FontSize="20" VerticalAlignment="Bottom"/>
                                         </StackPanel>
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="20" Cursor="Hand">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="20">
                                             <materialDesign:PackIcon Kind="AlertOutline" Foreground="Red" Width="10" Height="10" VerticalAlignment="Center" Margin="5 0"/>
                                             <TextBlock Text="Số lượng xe gửi nhiều." FontSize="8" Foreground="#FF8522BD"/>
                                         </StackPanel>
@@ -169,7 +169,7 @@
                                             <TextBlock Text="%" FontFamily="Champagne &amp; Limousines" Margin="0 5" Foreground="Gray" FontSize="20" VerticalAlignment="Bottom"/>
 
                                         </StackPanel>
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="20">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="20" Cursor="Hand" PreviewMouseLeftButtonDown="StackPanel_PreviewMouseLeftButtonDown">
                                             <materialDesign:PackIcon Kind="InformationCircleOutline" Foreground="Gray" Width="10" Height="10" VerticalAlignment="Center" Margin="5 0"/>
                                             <TextBlock Text="Xem chi tiết." FontSize="8" Foreground="Gray"/>
                                         </StackPanel>

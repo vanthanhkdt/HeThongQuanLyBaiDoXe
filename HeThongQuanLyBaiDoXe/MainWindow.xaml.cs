@@ -1053,5 +1053,10 @@ namespace HeThongQuanLyBaiDoXe
             set { quanTriVien = value; OnPropertyChanged("QuanTriVien"); }
         }
         #endregion
+
+        private void StackPanel_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("Chức năng đang phát triển. Quay lại sau.", "Thông báo");
+        }
     }
 }
