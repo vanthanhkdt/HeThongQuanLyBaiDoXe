@@ -75,11 +75,11 @@ namespace HeThongQuanLyBaiDoXe
                 string ketQua = KiemTraDuLieuRaVao(loaiCong, duLieu);
                 if (string.IsNullOrEmpty(ketQua))
                 {
-                    congComCuaVao.PhanHoiHanhDong(HoatDong.Vao, false, ketQua);
+                    congComCuaVao.PhanHoiHanhDong(HoatDong.Vao, true, ketQua);
                 }
                 else
                 {
-                    congComCuaVao.PhanHoiHanhDong(HoatDong.Vao, true, ketQua);
+                    congComCuaVao.PhanHoiHanhDong(HoatDong.Vao, false, ketQua);
                 }
             };
             congComCuaRa = new CongComRaVao(LoaiCongRaVao.Ra, Properties.Settings.Default.COMCuaRa);
@@ -89,11 +89,11 @@ namespace HeThongQuanLyBaiDoXe
                 string ketQua = KiemTraDuLieuRaVao(loaiCong, duLieu);
                 if (string.IsNullOrEmpty(ketQua))
                 {
-                    congComCuaRa.PhanHoiHanhDong(HoatDong.Ra, false, ketQua);
+                    congComCuaRa.PhanHoiHanhDong(HoatDong.Ra, true, ketQua);
                 }
                 else
                 {
-                    congComCuaRa.PhanHoiHanhDong(HoatDong.Ra, true, ketQua);
+                    congComCuaRa.PhanHoiHanhDong(HoatDong.Ra, false, ketQua);
                 }
             };
             // Tao ma the nap
