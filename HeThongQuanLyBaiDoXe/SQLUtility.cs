@@ -282,10 +282,6 @@ namespace HeThongQuanLyBaiDoXe
         {
             try
             {
-                //int filLength = 0;
-                //byte[] byteImageArray;
-                //byteImageArray = new byte[Convert.ToInt32(filLength)];
-
                 Connect();
                 SqlCommand command;
                 SqlDataAdapter adapter;
