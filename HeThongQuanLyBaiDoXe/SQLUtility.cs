@@ -318,7 +318,7 @@ namespace HeThongQuanLyBaiDoXe
                 for (int i = 0; i < values.Length; i++)
                 {
                     if (fields[i] == "HinhAnh")
-                        command.Parameters.AddWithValue(fields[i], GetData(values[i]));
+                        command.Parameters.AddWithValue(fields[i], GetData(string.IsNullOrEmpty(values[i]) ? null : values[i]));
                     else
                         command.Parameters.AddWithValue(fields[i], values[i]);
                 }
@@ -492,7 +492,7 @@ namespace HeThongQuanLyBaiDoXe
         }
 
         // Cập nhật số dư khả dụng
-        public void CapNhatSoDuKhaDung(HoatDong hoatDong,string maSo, string strSoTien)
+        public void CapNhatSoDuKhaDung(HoatDong hoatDong, string maSo, string strSoTien)
         {
             int soDuKhaDung = KiemTraSoDuKhaDung(maSo);
             int soTien = Convert.ToInt32(strSoTien);
@@ -560,7 +560,7 @@ namespace HeThongQuanLyBaiDoXe
             sqlConnection.Close();
         }
         // Cập nhật nạp thẻ thành công
-        public void CapNhatNapTheThanhCong(string maSo,string maTheNap)
+        public void CapNhatNapTheThanhCong(string maSo, string maTheNap)
         {
             Connect();
             SqlCommand command;
@@ -600,7 +600,7 @@ namespace HeThongQuanLyBaiDoXe
             sqlConnection.Close();
         }
 
-       
+
         // Approve Data Function
         public string ApproveUser(object hoTen, object maSo, object matKhau, object khoaLop, object maTheGui, object phanQuyen, object choPhepHoatDong,
             object nguoiThem, object ngayThem, object soDuKhaDung, object dangGui, object truyCapLanCuoi, object guiLanCuoi, object hinhAnh, object donGia)
