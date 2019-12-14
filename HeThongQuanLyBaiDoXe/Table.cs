@@ -22,7 +22,7 @@ namespace HeThongQuanLyBaiDoXe
             var lyDo = row["LyDo"];
             var daXuLy = row["DaXuLy"];
             var daNop = row["DaNop"];
-            var hinhAnh = row["HinhAnh"];
+            var hinhAnh = row["HinhAnh"] == System.DBNull.Value ? null : row["HinhAnh"];
 
             return new Registers(stt, hoTen, maSo, matKhau, khoaLop, maTheGui, phanQuyen, lyDo, daXuLy, daNop, hinhAnh);
         }
@@ -42,11 +42,11 @@ namespace HeThongQuanLyBaiDoXe
             var dangGui = row["DangGui"];
             var truyCapLanCuoi = row["TruyCapLanCuoi"];
             var guiLanCuoi = row["ThoiGianGuiCuoi"];
-            var hinhAnh = row["HinhAnh"];
+            var hinhAnh = row["HinhAnh"] == System.DBNull.Value ? null : row["HinhAnh"];
             var donGia = row["DonGia"];
 
             return new Users(stt, hoTen, maSo, matKhau, khoaLop, maTheGui, phanQuyen, choPhepHoatDong, nguoiThem, ngayThem, soDuKhaDung, dangGui,
-                truyCapLanCuoi, guiLanCuoi, hinhAnh,donGia);
+                truyCapLanCuoi, guiLanCuoi, hinhAnh, donGia);
         }
 
         public static string LayTenPhanQuyenTuTen(string name)
@@ -151,7 +151,7 @@ namespace HeThongQuanLyBaiDoXe
     }
     public enum TableName
     {
-        Users=0,
+        Users = 0,
         Registration,
         TheTamThoi,
         CardList,

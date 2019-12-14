@@ -282,6 +282,10 @@ namespace HeThongQuanLyBaiDoXe
         {
             try
             {
+                //int filLength = 0;
+                //byte[] byteImageArray;
+                //byteImageArray = new byte[Convert.ToInt32(filLength)];
+
                 Connect();
                 SqlCommand command;
                 SqlDataAdapter adapter;
@@ -318,7 +322,7 @@ namespace HeThongQuanLyBaiDoXe
                 for (int i = 0; i < values.Length; i++)
                 {
                     if (fields[i] == "HinhAnh")
-                        command.Parameters.AddWithValue(fields[i], GetData(string.IsNullOrEmpty(values[i]) ? null : values[i]));
+                        command.Parameters.AddWithValue(fields[i], string.IsNullOrEmpty(values[i]) ? (object)DBNull.Value : GetData(values[i])).SqlDbType = SqlDbType.Image;
                     else
                         command.Parameters.AddWithValue(fields[i], values[i]);
                 }
