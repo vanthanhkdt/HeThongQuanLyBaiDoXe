@@ -477,6 +477,25 @@ namespace HeThongQuanLyBaiDoXe
             return result;
         }
 
+        public void CapNhatHoatDong(string maSo, HoatDong hoatDong, bool thanhCong, string thoiGian, string noiDung, string maTheNap, string soTienNap)
+        {
+            int iHoatDong = -1; // -1:  Mặc định/Lỗi. Không làm gì | 0: Nạp thẻ | 1: Vào | 2: Ra
+            switch (hoatDong)
+            {
+                case HoatDong.NapThe:
+                    iHoatDong = 0;
+                    break;
+                case HoatDong.Vao:
+                    iHoatDong = 1;
+                    break;
+                case HoatDong.Ra:
+                    iHoatDong = 2;
+                    break;
+                default:
+                    break;
+            }
+            Insert(TableName.Activities, Table.Activities, new[] { maSo, iHoatDong.ToString(), thanhCong ? "1" : "0", thoiGian, noiDung, maTheNap, soTienNap });
+        }
         // Cập nhật đơn giá
         public void CapNhatDonGia(string maSo, string donGia)
         {
@@ -491,10 +510,10 @@ namespace HeThongQuanLyBaiDoXe
             sqlConnection.Close();
         }
 
-        private int TinhToanSoNgayGui(string maTheGui)
+        public int TinhToanSoNgayGui(string maSo)
         {
             DataTable dt = new DataTable();
-            string commandText = $"SELECT * FROM [DBBaiDoXe].[dbo].[TBUsers] WHERE MaTheGui=@MaTheGui AND ChoPhepHoatDong=1;";
+            string commandText = $"SELECT * FROM [DBBaiDoXe].[dbo].[TBUsers] WHERE MaSo=@MaSo AND ChoPhepHoatDong=1;";
             using (SqlConnection connection = new SqlConnection(ConnenctionString))
             {
                 connection.Open();
@@ -503,13 +522,13 @@ namespace HeThongQuanLyBaiDoXe
                 {
                     try
                     {
-                        command.Parameters.AddWithValue("@MaThe", maTheGui);
+                        command.Parameters.AddWithValue("@MaSo", maSo);
                         SqlDataReader dr = command.ExecuteReader();
                         if (dr.HasRows)
                         {
                             if (dt != null)
                             {
-                                dt = GetDataTable($"SELECT * FROM [DBBaiDoXe].[dbo].[TBUsers] WHERE MaThe = '{maTheGui}' AND ChoPhepHoatDong=1;");
+                                dt = GetDataTable($"SELECT * FROM [DBBaiDoXe].[dbo].[TBUsers] WHERE MaSo = '{maSo}' AND ChoPhepHoatDong=1;");
                                 if (dt.Rows.Count > 0)
                                 {
                                     var user = Table.ParseUser(dt.Rows[0]);
@@ -549,7 +568,7 @@ namespace HeThongQuanLyBaiDoXe
                     break;
                 case HoatDong.Ra:
                     if (soNgayGui > 1) //Kiểm tra nếu số ngày gửi không >1 thì sẽ không trừ tiền nữa, vì đã trừ lúc VÀO rồi.
-                        soDuKhaDung -= soTien * (soNgayGui-1); //Trừ số tiền lúc VÀO đã thanh toán.
+                        soDuKhaDung -= soTien * (soNgayGui - 1); //Trừ số tiền lúc VÀO đã thanh toán.
                     break;
                 default:
                     break;

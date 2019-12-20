@@ -131,8 +131,7 @@ CREATE TABLE [dbo].[TBActivities](
 	[NoiDung] [nvarchar](max) NULL,
 	[MaTheNap] [nvarchar](max) NULL,
 	[ThoiGian] [datetime] NOT NULL,
-	[SoTienNap] [nvarchar](max) NULL,
-	[HinhAnh] [nchar](10) NULL
+	[SoTienNap] [nvarchar](max) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
 GO

@@ -1,4 +1,6 @@
-﻿using LiveCharts;
+﻿//#define KET_NOI_CONG_COM //Comment this line if you dont want to use COM ports (for only Demo)
+
+using LiveCharts;
 using LiveCharts.Wpf;
 using MaterialDesignThemes.Wpf;
 using System;
@@ -69,7 +71,9 @@ namespace HeThongQuanLyBaiDoXe
             LayCongCom();
 
             congComCuaVao = new CongComRaVao(LoaiCongRaVao.Vao, Properties.Settings.Default.COMCuaVao);
-            //congComCuaVao.BatDauKetNoi();
+#if KET_NOI_CONG_COM
+            congComCuaVao.BatDauKetNoi();
+#endif
             congComCuaVao.TienHanhKiemTra += (loaiCong, duLieu) =>
             {
                 string ketQua = KiemTraDuLieuRaVao(loaiCong, duLieu);
@@ -83,7 +87,9 @@ namespace HeThongQuanLyBaiDoXe
                 }
             };
             congComCuaRa = new CongComRaVao(LoaiCongRaVao.Ra, Properties.Settings.Default.COMCuaRa);
-            //congComCuaRa.BatDauKetNoi();
+#if KET_NOI_CONG_COM
+            congComCuaRa.BatDauKetNoi();
+#endif
             congComCuaRa.TienHanhKiemTra += (loaiCong, duLieu) =>
             {
                 string ketQua = KiemTraDuLieuRaVao(loaiCong, duLieu);
@@ -328,30 +334,46 @@ namespace HeThongQuanLyBaiDoXe
         {
             DataTable dataTable = new DataTable();
             var ketQua = sqlUtility.KiemTraRaVao(duLieu, ref dataTable);
+
+            Users user = Table.ParseUser(dataTable.Rows[0]);
+            int soDuKhaDung = Convert.ToInt32(user.SoDuKhaDung);
+            int donGia = Convert.ToInt32(user.DonGia);
+            int soNgayGui = sqlUtility.TinhToanSoNgayGui(user.MaSo);
             switch (loaiCong)
             {
                 case LoaiCongRaVao.Ra:
                     if (dataTable.Rows.Count > 0)
                     {
-                        sqlUtility.CapNhatSoDuKhaDung(HoatDong.Ra, user.MaSo, user.DonGia);
-                        sqlUtility.CapNhatGuiTraXe(user.MaSo, HoatDong.Ra);
-                        return string.Empty;
+                        if (soDuKhaDung >= DonGia * (soNgayGui - 1))
+                        {
+                            sqlUtility.CapNhatSoDuKhaDung(HoatDong.Ra, user.MaSo, user.DonGia);
+                            sqlUtility.CapNhatGuiTraXe(user.MaSo, HoatDong.Ra);
+                            sqlUtility.CapNhatHoatDong(user.MaSo, HoatDong.Ra, true, DateTime.Now.ToString(), "Ra thành công.", "", "");
+                            return string.Empty;
+                        }
+                        else
+                        {
+                            sqlUtility.CapNhatHoatDong(user.MaSo, HoatDong.Ra, false, DateTime.Now.ToString(), "Ra thất bại. Số dư không đủ.", "", "");
+                            return "SoDuKhongDu";
+                        }
                     }
                     return "KhongTimThay";
                 case LoaiCongRaVao.Vao:
                     if (dataTable.Rows.Count > 0)
                     {
-                        Users user = Table.ParseUser(dataTable.Rows[0]);
-                        int soDuKhaDung = Convert.ToInt32(user.SoDuKhaDung);
-                        int donGia = Convert.ToInt32(user.DonGia);
                         if (soDuKhaDung >= DonGia)
                         {
                             sqlUtility.CapNhatSoDuKhaDung(HoatDong.Vao, user.MaSo, user.DonGia);
                             sqlUtility.CapNhatGuiTraXe(user.MaSo, HoatDong.Vao);
                             sqlUtility.CapNhatThoiGianGuiCuoi(user.MaSo);
+                            sqlUtility.CapNhatHoatDong(user.MaSo, HoatDong.Vao, true, DateTime.Now.ToString(), "Vào thành công.", "", "");
                             return string.Empty;
                         }
-                        return "SoDuKhongDu";
+                        else
+                        {
+                            sqlUtility.CapNhatHoatDong(user.MaSo, HoatDong.Vao, false, DateTime.Now.ToString(), "Vào thất bại. Số dư không đủ.", "", "");
+                            return "SoDuKhongDu";
+                        }
                     }
                     return "KhongTimThay";
                 default:
@@ -635,12 +657,14 @@ namespace HeThongQuanLyBaiDoXe
                         stackPanelMessageTT.Children.Add(new MessageReceivedUserControl("TNUT-FEE", DateTime.Now.ToString("HH:mm"),
                            $"Nạp thẻ thành công.{Environment.NewLine}Tài khoản: {user.HoTen} ({user.MaSo}).{Environment.NewLine}Số tiền nạp: {DinhDangTien(dataTable.Rows[0]["GiaTri"].ToString())}{Environment.NewLine}Số dư khả dụng: {DinhDangTien(user.SoDuKhaDung)}"));
                         ParsePaymentUsers(user);
+                        sqlUtility.CapNhatHoatDong(user.MaSo, HoatDong.NapThe, true, DateTime.Now.ToString(), "Nạp thẻ thành công.", maTheNap, dataTable.Rows[0]["GiaTri"].ToString());
                     }
                 }
                 else
                 {
                     stackPanelMessageTT.Children.Add(new MessageReceivedUserControl("TNUT-FEE", DateTime.Now.ToString("HH:mm"),
                            "Thất bại. Kiểm tra lại mã thẻ nạp."));
+                    sqlUtility.CapNhatHoatDong(user.MaSo, HoatDong.NapThe, false, DateTime.Now.ToString(), "Nạp thẻ thất bại.", maTheNap, "");
                 }
             }
             scrollViewerQuanLyTheTT.ScrollToBottom();
@@ -921,12 +945,14 @@ namespace HeThongQuanLyBaiDoXe
                         stackPanelMessage.Children.Add(new MessageReceivedUserControl("TNUT-FEE", DateTime.Now.ToString("HH:mm"),
                            $"Nạp thẻ thành công cho tài khoản {userDaChon.HoTen} ({userDaChon.MaSo}).{Environment.NewLine}Số tiền nạp: {DinhDangTien(dataTable.Rows[0]["GiaTri"].ToString())}{Environment.NewLine}Số dư khả dụng: {DinhDangTien(userDaChon.SoDuKhaDung)}"));
                         ParseProfileUsers(userDaChon);
+                        sqlUtility.CapNhatHoatDong(user.MaSo, HoatDong.NapThe, true, DateTime.Now.ToString(), "Nạp thẻ thành công.", maTheNap, dataTable.Rows[0]["GiaTri"].ToString());
                     }
                 }
                 else
                 {
                     stackPanelMessage.Children.Add(new MessageReceivedUserControl("TNUT-FEE", DateTime.Now.ToString("HH:mm"),
                            "Thất bại. Kiểm tra lại mã thẻ nạp."));
+                    sqlUtility.CapNhatHoatDong(user.MaSo, HoatDong.NapThe, false, DateTime.Now.ToString(), "Nạp thẻ thất bại.", maTheNap, "");
                 }
             }
             scrollViewerQuanLyThe.ScrollToBottom();

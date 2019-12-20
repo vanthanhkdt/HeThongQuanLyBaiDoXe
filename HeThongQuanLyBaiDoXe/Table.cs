@@ -89,7 +89,7 @@ namespace HeThongQuanLyBaiDoXe
             }
         }
 
-        public static string[] PhanQuyen = new[] { "PhanQuyen", "MaPhanQuyen" };
+        public static string[] PhanQuyen = new[] { "PhanQuyen", "MaPhanQuyen"};
         public static string[] Users = new[] { //"STT",
             "HoTen",
             "MaSo",
@@ -105,8 +105,7 @@ namespace HeThongQuanLyBaiDoXe
             "TruyCapLanCuoi",
             "ThoiGianGuiCuoi",
             "HinhAnh",
-            "DonGia"
-        };
+            "DonGia"};
         /// <summary>
         ///  hoTen,maSo,khoaLop,maTheGui,matKhau,phanQuyen,lyDo,daXuLy,daNop,hinhAnh 
         /// </summary>
@@ -133,8 +132,7 @@ namespace HeThongQuanLyBaiDoXe
             "NgayKichHoat",
             "DaKichHoat",
             "TaiKhoanKichHoat",
-            "ChoPhepHoatDong"
-        };
+            "ChoPhepHoatDong"};
 
         /// <summary>
         /// The Tam Thoi
@@ -146,7 +144,16 @@ namespace HeThongQuanLyBaiDoXe
             "ChoPhepHoatDong",
             "ThoiGianGuiCuoi",
             "ThoiGianTraCuoi",
-            "DonGia"
+            "DonGia"};
+
+        public static string[] Activities = new[] { //"STT",
+            "MaSo",
+            "HoatDong",
+            "ThanhCong",
+            "ThoiGian",
+            "NoiDung",
+            "MaTheNap",
+            "SoTienNap"
         };
     }
     public enum TableName

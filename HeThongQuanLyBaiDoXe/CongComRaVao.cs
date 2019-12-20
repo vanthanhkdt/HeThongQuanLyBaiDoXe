@@ -167,8 +167,8 @@ namespace HeThongQuanLyBaiDoXe
     public enum HoatDong
     {
         NapThe = 0,
-        Ra,
         Vao,
+        Ra,
         Khac
     }
 }
