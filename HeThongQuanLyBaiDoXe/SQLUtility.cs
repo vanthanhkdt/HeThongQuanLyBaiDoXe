@@ -491,18 +491,65 @@ namespace HeThongQuanLyBaiDoXe
             sqlConnection.Close();
         }
 
+        private int TinhToanSoNgayGui(string maTheGui)
+        {
+            DataTable dt = new DataTable();
+            string commandText = $"SELECT * FROM [DBBaiDoXe].[dbo].[TBUsers] WHERE MaTheGui=@MaTheGui AND ChoPhepHoatDong=1;";
+            using (SqlConnection connection = new SqlConnection(ConnenctionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(commandText, connection))
+                {
+                    try
+                    {
+                        command.Parameters.AddWithValue("@MaThe", maTheGui);
+                        SqlDataReader dr = command.ExecuteReader();
+                        if (dr.HasRows)
+                        {
+                            if (dt != null)
+                            {
+                                dt = GetDataTable($"SELECT * FROM [DBBaiDoXe].[dbo].[TBUsers] WHERE MaThe = '{maTheGui}' AND ChoPhepHoatDong=1;");
+                                if (dt.Rows.Count > 0)
+                                {
+                                    var user = Table.ParseUser(dt.Rows[0]);
+                                    DateTime? ngayGui = DateTime.Parse(user.ThoiGianGuiCuoi);
+                                    if (ngayGui.HasValue)
+                                    {
+                                        return (DateTime.Now - (DateTime)ngayGui).Days;
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        return 0;
+                    }
+                }
+            }
+            return 0;
+        }
+
         // Cập nhật số dư khả dụng
         public void CapNhatSoDuKhaDung(HoatDong hoatDong, string maSo, string strSoTien)
         {
-            int soDuKhaDung = KiemTraSoDuKhaDung(maSo);
-            int soTien = Convert.ToInt32(strSoTien);
+            int soDuKhaDung = KiemTraSoDuKhaDung(maSo); //Đặt con trỏ chuột vào tên hàm (chữ "KiemTraSoDuKhaDung"), nhấn F12 để xem chi tiết.
+            int soTien = Convert.ToInt32(strSoTien); //Số tiền: Đơn giá (Hoạt động = Vào hoặc Ra)  || Mệnh giá thẻ nạp (Hoạt động = Nạp thẻ).
+            int soNgayGui = TinhToanSoNgayGui(maSo);
             switch (hoatDong)
             {
                 case HoatDong.NapThe:
-                    soDuKhaDung += soTien;
+                    soDuKhaDung += soTien; //Nạp thẻ thì đương nhiên cộng tiền.
                     break;
                 case HoatDong.Vao:
-                    soDuKhaDung -= soTien;
+                    soDuKhaDung -= soTien; //Cứ VÀO là mất tiền.
+                    break;
+                case HoatDong.Ra:
+                    if (soNgayGui > 1) //Kiểm tra nếu số ngày gửi không >1 thì sẽ không trừ tiền nữa, vì đã trừ lúc VÀO rồi.
+                        soDuKhaDung -= soTien * (soNgayGui-1); //Trừ số tiền lúc VÀO đã thanh toán.
                     break;
                 default:
                     break;

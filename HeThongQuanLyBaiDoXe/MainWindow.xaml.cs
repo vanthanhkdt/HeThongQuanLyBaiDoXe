@@ -333,6 +333,7 @@ namespace HeThongQuanLyBaiDoXe
                 case LoaiCongRaVao.Ra:
                     if (dataTable.Rows.Count > 0)
                     {
+                        sqlUtility.CapNhatSoDuKhaDung(HoatDong.Ra, user.MaSo, user.DonGia);
                         sqlUtility.CapNhatGuiTraXe(user.MaSo, HoatDong.Ra);
                         return string.Empty;
                     }
