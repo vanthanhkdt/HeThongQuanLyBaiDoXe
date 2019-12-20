@@ -580,7 +580,7 @@ namespace HeThongQuanLyBaiDoXe
         {
             if (DonGia > 0 && DonGia % 10000 == 0)
             {
-                var thongBao = new MessageWindow($"Đơn giá hiện tại đã vượt mức {DinhDangTien(DonGia.ToString())}/lượt. Bạn có muốn tiếp tục?", PackIconKind.Coin, false);
+                var thongBao = new MessageWindow($"Đơn giá hiện tại đã vượt mức {DinhDangTien(DonGia.ToString())}/ngày. Bạn có muốn tiếp tục?", PackIconKind.Coin, false);
                 thongBao.OnPhanHoiDonGia += (phanHoi) => { DonGia += phanHoi; };
             }
             else
@@ -593,7 +593,7 @@ namespace HeThongQuanLyBaiDoXe
         {
             if (DonGia <= 0)
             {
-                var thongBao = new MessageWindow($"Đơn giá hiện tại đã nhỏ hơn mức {DinhDangTien(DonGia.ToString())}/lượt. Bạn có muốn tiếp tục?", PackIconKind.DollarOff, false);
+                var thongBao = new MessageWindow($"Đơn giá hiện tại đã nhỏ hơn mức {DinhDangTien(DonGia.ToString())}/ngày. Bạn có muốn tiếp tục?", PackIconKind.DollarOff, false);
                 thongBao.OnPhanHoiDonGia += (phanHoi) => { DonGia -= phanHoi; };
             }
             else
@@ -605,7 +605,7 @@ namespace HeThongQuanLyBaiDoXe
         private void BtnLuuGia_Click(object sender, RoutedEventArgs e)
         {
             sqlUtility.CapNhatDonGia(userDaChon.MaSo, tblDonGia.Text);
-            MessageBox.Show($"Đã cập nhật đơn giá: {DinhDangTien(tblDonGia.Text)}/lượt.{Environment.NewLine}Họ và tên: {userDaChon.HoTen}{Environment.NewLine}Mã số: {userDaChon.MaSo}", "Thành công!");
+            MessageBox.Show($"Đã cập nhật đơn giá: {DinhDangTien(tblDonGia.Text)}/ngày.{Environment.NewLine}Họ và tên: {userDaChon.HoTen}{Environment.NewLine}Mã số: {userDaChon.MaSo}", "Thành công!");
         }
         #endregion
 

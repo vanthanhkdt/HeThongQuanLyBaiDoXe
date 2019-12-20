@@ -594,7 +594,7 @@
                                 <Border Name="borderTrangThai" Width="10" Height="10" HorizontalAlignment="Right" Margin="15" Background="Green" CornerRadius="15" VerticalAlignment="Center"/>
                                 <TextBlock Name="tblStatus" Text="Đang gửi" FontSize="18" VerticalAlignment="Center"/>
                                 <TextBlock Name="tblDonGia" Text="{Binding DonGia}" FontWeight="DemiBold" FontSize="18" Foreground="#FF4622A8" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                                <TextBlock Name="tblDonVi" Text="(VNĐ/lượt)" FontStyle="Italic" FontSize="18" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                <TextBlock Name="tblDonVi" Text="(VNĐ/ngày)" FontStyle="Italic" FontSize="18" VerticalAlignment="Center" Margin="5,0,0,0"/>
                                 <Button Name="btnTangGia" ToolTip="Tăng" Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Margin="15 15 0 15" Click="BtnTangGia_Click">
                                     <materialDesign:PackIcon Kind="Add"/>
                                 </Button>
