@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using static HeThongQuanLyBaiDoXe.AccoundData;
 
 namespace HeThongQuanLyBaiDoXe
 {
@@ -182,6 +183,64 @@ namespace HeThongQuanLyBaiDoXe
             return "Thất bại";
         }
 
+        public Users LayUserTuMaSo(string maSo)
+        {
+            DataTable dt = new DataTable();
+            string commandText = $"SELECT * FROM TBUsers WHERE MaSo=@MaSo AND ChoPhepHoatDong=1;";
+            using (SqlConnection connection = new SqlConnection(ConnenctionString))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(commandText, connection))
+                {
+                    try
+                    {
+                        command.Parameters.AddWithValue("@MaSo", maSo);
+                        SqlDataReader dr = command.ExecuteReader();
+                        if (dr.HasRows)
+                        {
+                            if (dt != null)
+                            {
+                                dt = GetDataTable($"SELECT * FROM [DBBaiDoXe].[dbo].[TBUsers] WHERE MaSo = '{maSo}' AND ChoPhepHoatDong=1;");
+                            }
+                        }
+                        return Table.ParseUser(dt.Rows[0]);
+                    }
+                    catch (Exception ex)
+                    {
+                        return null;
+                    }
+                }
+            }
+        }
+        public Users LayUserTuMaTheGui(string maTheGui)
+        {
+            DataTable dt = new DataTable();
+            string commandText = $"SELECT * FROM TBUsers WHERE MaTheGui=@MaTheGui AND ChoPhepHoatDong=1;";
+            using (SqlConnection connection = new SqlConnection(ConnenctionString))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(commandText, connection))
+                {
+                    try
+                    {
+                        command.Parameters.AddWithValue("@MaTheGui", maTheGui);
+                        SqlDataReader dr = command.ExecuteReader();
+                        if (dr.HasRows)
+                        {
+                            if (dt != null)
+                            {
+                                dt = GetDataTable($"SELECT * FROM [DBBaiDoXe].[dbo].[TBUsers] WHERE MaTheGui = '{maTheGui}' AND ChoPhepHoatDong=1;");
+                            }
+                        }
+                        return Table.ParseUser(dt.Rows[0]);
+                    }
+                    catch (Exception ex)
+                    {
+                        return null;
+                    }
+                }
+            }
+        }
         /// <summary>
         /// Kiem tra ma the nap
         /// </summary>

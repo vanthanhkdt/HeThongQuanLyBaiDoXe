@@ -73,12 +73,10 @@ namespace HeThongQuanLyBaiDoXe
                     if (thanhCong)
                     {
                         duLieuGui += "1"; // Neu thanh cong, them '1' vao chuoi
-                        duLieuGui += "ThanhCong:NapThe:" + thongBao; // Du lieu hien thi LCD
                     }
                     else
                     {
                         duLieuGui += "0"; // Neu that bai, them '0' vao chuoi
-                        duLieuGui += "ThatBai:NapThe:" + thongBao; // Du lieu hien thi LCD
                     }
                     break;
                 case HoatDong.Vao:
@@ -86,12 +84,10 @@ namespace HeThongQuanLyBaiDoXe
                     if (thanhCong)
                     {
                         duLieuGui += "1"; // Neu thanh cong, them '1' vao chuoi
-                        duLieuGui += "ChoPhepVao:" + thongBao; // Du lieu hien thi LCD
                     }
                     else
                     {
                         duLieuGui += "0"; // Neu that bai, them '0' vao chuoi
-                        duLieuGui += "TuChoiVao:" + thongBao; // Du lieu hien thi LCD
                     }
                     break;
                 case HoatDong.Ra:
@@ -99,17 +95,16 @@ namespace HeThongQuanLyBaiDoXe
                     if (thanhCong)
                     {
                         duLieuGui += "1"; // Neu thanh cong, them '1' vao chuoi
-                        duLieuGui += "ChoPhepRa:" + thongBao; // Du lieu hien thi LCD
                     }
                     else
                     {
                         duLieuGui += "0"; // Neu that bai, them '0' vao chuoi
-                        duLieuGui += "TuChoiRa:" + thongBao; // Du lieu hien thi LCD
                     }
                     break;
                 default:
                     break;
             }
+            duLieuGui += thongBao; // Du lieu hien thi LCD
             try
             {
                 if (congCom != null && congCom.IsOpen)
