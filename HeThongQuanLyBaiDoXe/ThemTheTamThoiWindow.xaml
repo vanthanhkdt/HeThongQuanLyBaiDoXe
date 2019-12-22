@@ -13,8 +13,7 @@
         ResizeMode="NoResize" 
         Height="190" Width="300" 
         WindowStyle="SingleBorderWindow"
-        WindowStartupLocation="Manual"
-        >
+        WindowStartupLocation="Manual">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="5*"/>

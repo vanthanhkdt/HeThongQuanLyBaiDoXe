@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.IO.Ports;
 using System.Runtime.InteropServices;
 using System.Text;
 using static HeThongQuanLyBaiDoXe.AccoundData;
@@ -104,6 +105,40 @@ namespace HeThongQuanLyBaiDoXe
             return -1; // Tài khoản không tồn tại hoặc không được phép hoạt động.
         }
 
+        public bool KiemTraTonTaiMaSo(string maSo)
+        {
+            string commandText = $"SELECT * FROM [DBBaiDoXe].[dbo].[TBUsers] WHERE MaSo = N'{maSo}';";
+
+            Connect();
+            SqlDataAdapter da = new SqlDataAdapter(commandText, sqlConnection);
+            DataTable dt = new DataTable();
+            if (dt != null)
+            {
+                da.Fill(dt);
+                if (dt.Rows.Count > 0)
+                    return false; // Tài khoản đã tồn tại
+            }
+
+            Disconnect();
+            return false; // Tài khoản không tồn tại.
+        }
+        public bool KiemTraTonTaiMaThe(string maThe)
+        {
+            string commandText = $"SELECT * FROM [DBBaiDoXe].[dbo].[TBUsers] WHERE MaThe = N'{maThe}';";
+
+            Connect();
+            SqlDataAdapter da = new SqlDataAdapter(commandText, sqlConnection);
+            DataTable dt = new DataTable();
+            if (dt != null)
+            {
+                da.Fill(dt);
+                if (dt.Rows.Count > 0)
+                    return false; // Tài khoản đã tồn tại
+            }
+
+            Disconnect();
+            return false; // Tài khoản không tồn tại.
+        }
         /// <summary>
         /// Kiểm tra đăng nhập
         /// </summary>
@@ -803,6 +838,13 @@ namespace HeThongQuanLyBaiDoXe
 
             Disconnect();
             return "Error";
+        }
+
+        // DashBoard
+        public int SoLuongDangGui()
+        {
+            return this.GetDataTable($"SELECT * FROM TBUsers WHERE DangGui=1 AND ChoPhepHoatDong=1;").Rows.Count;
+            //return 120;
         }
         // Byte FileData
         public byte[] GetFileDataDB(string sql)

@@ -22,9 +22,12 @@ namespace HeThongQuanLyBaiDoXe
     public partial class ThemTheTamThoiWindow : Window
     {
         public ThemTheTamThoi OnThemTheTamThoi;
-        public ThemTheTamThoiWindow()
+        private CongComRaVao congComQuetThe;
+        public ThemTheTamThoiWindow(CongComRaVao congCom)
         {
             InitializeComponent();
+            this.congComQuetThe = congCom;
+            this.congComQuetThe.HanhDongLayMaTheTamThoi += (maThe) => { this.txtMaThe.Text = maThe; };
         }
 
         private void BtnThem_Click(object sender, RoutedEventArgs e)

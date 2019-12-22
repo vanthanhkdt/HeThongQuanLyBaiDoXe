@@ -23,6 +23,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using static HeThongQuanLyBaiDoXe.AccoundData;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -44,18 +45,11 @@ namespace HeThongQuanLyBaiDoXe
         private Users user;// = new Users() { MaSo="K125520207029"};
         private Users userDaChon;
 
+        public int tongSoLuongCho = 200;
         public const string CU_PHAP_NAP_THE = "FEE+NAPTHE=";
         BackgroundWorker exportEXCEL = new BackgroundWorker();
-        //public MainWindow()
-        //{
-        //    InitializeComponent();
-        //    DataContext = this;
-        //    user = new Users() { MaSo = "K125520207029" };
-        //    this.QuanTriVien = true;
-        //    sqlUtility = new SQLUtility(@"Data Source = DESKTOP-JM571ID\SQLEXPRESS; Initial Catalog = DBBaiDoXe; User id = doantotnghiepbaidoxe; Password = baidoxe!@#$;");
-        //    string mk = sqlUtility.CreateMD5Hash("A");
-        //    LoadData();
-        //}
+        DispatcherTimer timerCapNhatDashBoard;
+
         public MainWindow(Users user)
         {
             InitializeComponent();
@@ -85,7 +79,7 @@ namespace HeThongQuanLyBaiDoXe
                                     + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
                                     + Table.XoaChuCoDauDeHienThiLCD(u.HoTen) // Hàng 2: Họ tên
                                     + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
-                                    + "SD: " + u.SoDuKhaDung                 // Hàng 3: Biển kiểm soát/ CMND
+                                    + "Ma So: " + u.MaSo                 // Hàng 3: Biển kiểm soát/ CMND
                                     + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
                                     + "SD: " + u.SoDuKhaDung;                // Hàng 4: Số dư khả dụng
                     congComCuaVao.PhanHoiHanhDong(HoatDong.Vao, true, duLieuPhanHoi);
@@ -142,6 +136,14 @@ namespace HeThongQuanLyBaiDoXe
             //exportEXCEL.RunWorkerCompleted += ExportEXCEL_RunWorkerCompleted;
             //exportEXCEL.WorkerReportsProgress = true;
             //exportEXCEL.WorkerSupportsCancellation = true;
+
+            timerCapNhatDashBoard = new DispatcherTimer();
+            timerCapNhatDashBoard.Interval = new TimeSpan(0, 0, 20); // Update DashBoard every 20s
+            timerCapNhatDashBoard.Tick += (sender, e) =>
+            {
+                ParseDashBoard(tongSoLuongCho - sqlUtility.SoLuongDangGui());
+            };
+            timerCapNhatDashBoard.Start();
 
             KhoiTaoBieuDo();
             TaiBieuDo();
@@ -413,6 +415,17 @@ namespace HeThongQuanLyBaiDoXe
             }
         }
 
+        private void ParseDashBoard(int soLuongChoKhaDung) // Updating...
+        {
+            tblTongSoLuongCho.Text = tongSoLuongCho.ToString();
+            tblSoLuongChoKhaDung.Text = soLuongChoKhaDung.ToString();
+
+            int soLuongDangGui = tongSoLuongCho = soLuongChoKhaDung;
+
+            tblTiLeXeDangGui.Text = "" + Math.Round(100 * (double)soLuongDangGui / (double)tongSoLuongCho);
+            tblTiLeXeDaTra.Text = "" + Math.Round(100 * (double)soLuongDangGui / (double)tongSoLuongCho);
+            tblTiLeThayDoi.Text = "15";
+        }
         private void LoadData()
         {
             try
@@ -597,7 +610,7 @@ namespace HeThongQuanLyBaiDoXe
         #region Tab The Tam Thoi
         private void MenuItemThemMoi_Click(object sender, RoutedEventArgs e)
         {
-            ThemTheTamThoiWindow ttttWindow = new ThemTheTamThoiWindow();
+            ThemTheTamThoiWindow ttttWindow = new ThemTheTamThoiWindow(this.congComCuaVao);
             ttttWindow.OnThemTheTamThoi += (the) =>
             {
                 sqlUtility.Insert(TableName.TheTamThoi, Table.TheTamThoi, new[] { the.SoThe, the.MaThe, the.ChoPhepHoatDong, the.DangGui, the.ThoiGianGuiCuoi, the.ThoiGianTraCuoi, the.DonGia });

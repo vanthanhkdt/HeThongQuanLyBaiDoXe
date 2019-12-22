@@ -218,4 +218,3 @@ E:\Project\DoAnTotNghiep_Huyen\DoAnTotNghiep_V106\HeThongQuanLyBaiDoXe\obj\Debug
 E:\Project\DoAnTotNghiep_Huyen\DoAnTotNghiep_V106\HeThongQuanLyBaiDoXe\obj\Debug\HeThongQuanLyBaiDoXe.pdb
 E:\Project\DoAnTotNghiep_Huyen\DoAnTotNghiep_V106\HeThongQuanLyBaiDoXe\obj\Debug\ThemTheTamThoiWindow.g.cs
 E:\Project\DoAnTotNghiep_Huyen\DoAnTotNghiep_V106\HeThongQuanLyBaiDoXe\obj\Debug\ThemTheTamThoiWindow.baml
-E:\Project\DoAnTotNghiep_Huyen\DoAnTotNghiep_V106\HeThongQuanLyBaiDoXe\obj\Debug\HeThongQuanLyBaiDoXe.csprojAssemblyReference.cache

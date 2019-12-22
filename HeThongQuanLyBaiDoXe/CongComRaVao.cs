@@ -10,11 +10,13 @@ using System.Windows;
 namespace HeThongQuanLyBaiDoXe
 {
     public delegate void KiemTra(LoaiCongRaVao loaiCong, string duLieu);
+    public delegate void LayMaThe(string duLieu);
     public class CongComRaVao
     {
         private string tenCongCom;
         private SerialPort congCom;
         public KiemTra TienHanhKiemTra;
+        public LayMaThe HanhDongLayMaTheTamThoi;
         private LoaiCongRaVao loaiCongRaVao;
 
         public CongComRaVao(LoaiCongRaVao loaiCong, string ten)
@@ -128,6 +130,7 @@ namespace HeThongQuanLyBaiDoXe
 
             //TODO:
             TienHanhKiemTra.Invoke(loaiCongRaVao, duLieuNhanDuoc);
+            HanhDongLayMaTheTamThoi.Invoke(duLieuNhanDuoc);
         }
 
         public bool DangMo()
