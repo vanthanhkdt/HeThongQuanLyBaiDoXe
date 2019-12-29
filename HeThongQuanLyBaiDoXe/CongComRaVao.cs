@@ -130,7 +130,7 @@ namespace HeThongQuanLyBaiDoXe
 
             //TODO:
             TienHanhKiemTra.Invoke(loaiCongRaVao, duLieuNhanDuoc);
-            HanhDongLayMaTheTamThoi.Invoke(duLieuNhanDuoc);
+            HanhDongLayMaTheTamThoi?.Invoke(duLieuNhanDuoc);
         }
 
         public bool DangMo()

@@ -27,7 +27,9 @@ namespace HeThongQuanLyBaiDoXe
         {
             InitializeComponent();
             this.congComQuetThe = congCom;
-            this.congComQuetThe.HanhDongLayMaTheTamThoi += (maThe) => { this.txtMaThe.Text = maThe; };
+            this.congComQuetThe.HanhDongLayMaTheTamThoi += (maThe) => {
+                Dispatcher.Invoke(() => { this.txtMaThe.Text = maThe; });
+            };
         }
 
         private void BtnThem_Click(object sender, RoutedEventArgs e)

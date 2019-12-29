@@ -38,6 +38,8 @@ namespace HeThongQuanLyBaiDoXe
 
         #endregion
 
+        //public string ConnenctionString { get; set; } = DESKTOP-1MO8ATS\SQLEXPRESS; Initial Catalog = DBBaiDoXe; User id = baidoxe; Password = baidoxe!@#$;";
+        //public string ConnenctionString { get; set; } = @"Data Source = 192.168.0.104,1433; Initial Catalog = DBBaiDoXe; User id = baidoxe; Password = baidoxe!@#$;";
         public string ConnenctionString { get; set; } = @"Data Source = DESKTOP-JM571ID\SQLEXPRESS; Initial Catalog = DBBaiDoXe; User id = doantotnghiepbaidoxe; Password = baidoxe!@#$;";
         private SqlConnection sqlConnection;
 
@@ -124,7 +126,7 @@ namespace HeThongQuanLyBaiDoXe
         }
         public bool KiemTraTonTaiMaThe(string maThe)
         {
-            string commandText = $"SELECT * FROM [DBBaiDoXe].[dbo].[TBUsers] WHERE MaThe = N'{maThe}';";
+            string commandText = $"SELECT * FROM [DBBaiDoXe].[dbo].[TBUsers] WHERE MaTheGui = N'{maThe}';";
 
             Connect();
             SqlDataAdapter da = new SqlDataAdapter(commandText, sqlConnection);
@@ -184,9 +186,9 @@ namespace HeThongQuanLyBaiDoXe
             return "Tài khoản hoặc Mật khẩu không đúng.";
         }
 
-        public string KiemTraRaVao(string maSo, ref DataTable dt)
+        public string KiemTraRaVao(string maTheGui, ref DataTable dt)
         {
-            string commandText = $"SELECT * FROM TBUsers WHERE MaSo=@MaSo AND ChoPhepHoatDong=1;";
+            string commandText = $"SELECT * FROM TBUsers WHERE MaTheGui=@MaTheGui AND ChoPhepHoatDong=1;";
             using (SqlConnection connection = new SqlConnection(ConnenctionString))
             {
                 connection.Open();
@@ -195,13 +197,13 @@ namespace HeThongQuanLyBaiDoXe
                 {
                     try
                     {
-                        command.Parameters.AddWithValue("@MaSo", maSo);
+                        command.Parameters.AddWithValue("@MaTheGui", maTheGui);
                         SqlDataReader dr = command.ExecuteReader();
                         if (dr.HasRows)
                         {
                             if (dt != null)
                             {
-                                dt = GetDataTable($"SELECT * FROM [DBBaiDoXe].[dbo].[TBUsers] WHERE MaSo = '{maSo}' AND ChoPhepHoatDong=1;");
+                                dt = GetDataTable($"SELECT * FROM [DBBaiDoXe].[dbo].[TBUsers] WHERE MaTheGui = '{maTheGui}' AND ChoPhepHoatDong=1;");
                                 if (dt.Rows.Count > 0)
                                     return string.Empty;
                             }

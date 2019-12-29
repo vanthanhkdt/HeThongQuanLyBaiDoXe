@@ -84,7 +84,7 @@ namespace HeThongQuanLyBaiDoXe
                 string matKhau = pwPassword.Password.ToString().Trim();
 
                 DataTable dt = new DataTable();
-                string ketQuaDangNhap = sqlUtility.KiemTraDangNhap(maSo, sqlUtility.CreateMD5Hash(matKhau),ref dt);
+                string ketQuaDangNhap = sqlUtility.KiemTraDangNhap(maSo, sqlUtility.CreateMD5Hash(matKhau), ref dt);
                 if (string.IsNullOrEmpty(ketQuaDangNhap))
                 {
                     Properties.Settings.Default.UserName = maSo;

@@ -71,6 +71,8 @@ namespace HeThongQuanLyBaiDoXe
             congComCuaVao.TienHanhKiemTra += (loaiCong, duLieu) =>
             {
                 string ketQua = KiemTraDuLieuRaVao(loaiCong, duLieu);
+                if (!string.IsNullOrEmpty(ketQua))
+                    return;
                 Users u = sqlUtility.LayUserTuMaTheGui(duLieu);
                 string duLieuPhanHoi = ketQua;
                 if (string.IsNullOrEmpty(ketQua))
@@ -79,14 +81,15 @@ namespace HeThongQuanLyBaiDoXe
                                     + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
                                     + Table.XoaChuCoDauDeHienThiLCD(u.HoTen) // Hàng 2: Họ tên
                                     + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
-                                    + "Ma So: " + u.MaSo                 // Hàng 3: Biển kiểm soát/ CMND
+                                    + "Ma So: " + u.MaSo                     // Hàng 3: Biển kiểm soát/ CMND
                                     + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
                                     + "SD: " + u.SoDuKhaDung;                // Hàng 4: Số dư khả dụng
                     congComCuaVao.PhanHoiHanhDong(HoatDong.Vao, true, duLieuPhanHoi);
+                    Dispatcher.Invoke(() => { MessageWindow m = new MessageWindow(duLieuPhanHoi); });
                 }
                 else
                 {                                                            // LCD screen Constructor
-                    duLieuPhanHoi = "That bai: Vao"                           // Hàng 1: That bai: Vao
+                    duLieuPhanHoi = "That bai: Vao"                          // Hàng 1: That bai: Vao
                                     + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
                                     + Table.XoaChuCoDauDeHienThiLCD(u.HoTen) // Hàng 2: Họ tên
                                     + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
@@ -94,6 +97,7 @@ namespace HeThongQuanLyBaiDoXe
                                     + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
                                     + "SD: " + u.SoDuKhaDung;                // Hàng 4: Số dư khả dụng
                     congComCuaVao.PhanHoiHanhDong(HoatDong.Vao, false, duLieuPhanHoi);
+                    Dispatcher.Invoke(() => { MessageWindow m = new MessageWindow(duLieuPhanHoi); });
                 }
             };
             congComCuaRa = new CongComRaVao(LoaiCongRaVao.Ra, Properties.Settings.Default.COMCuaRa);
@@ -107,7 +111,7 @@ namespace HeThongQuanLyBaiDoXe
                 string duLieuPhanHoi = ketQua;
                 if (string.IsNullOrEmpty(ketQua))
                 {                                                            // LCD screen Constructor
-                    duLieuPhanHoi = "Thanh Cong: Ra"                        // Hàng 1: Thanh Cong: Ra
+                    duLieuPhanHoi = "Thanh Cong: Ra"                         // Hàng 1: Thanh Cong: Ra
                                     + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
                                     + Table.XoaChuCoDauDeHienThiLCD(u.HoTen) // Hàng 2: Họ tên
                                     + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
@@ -115,6 +119,8 @@ namespace HeThongQuanLyBaiDoXe
                                     + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
                                     + "SD: " + u.SoDuKhaDung;                // Hàng 4: Số dư khả dụng
                     congComCuaRa.PhanHoiHanhDong(HoatDong.Ra, true, duLieuPhanHoi);
+                    // MessageWindow m = new MessageWindow(duLieuPhanHoi);
+                    Dispatcher.Invoke(() => { MessageWindow m = new MessageWindow(duLieuPhanHoi); });
                 }
                 else
                 {                                                            // LCD screen Constructor
@@ -126,6 +132,7 @@ namespace HeThongQuanLyBaiDoXe
                                     + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
                                     + "SD: " + u.SoDuKhaDung;                // Hàng 4: Số dư khả dụng
                     congComCuaRa.PhanHoiHanhDong(HoatDong.Ra, false, duLieuPhanHoi);
+                    Dispatcher.Invoke(() => { MessageWindow m = new MessageWindow(duLieuPhanHoi); });
                 }
             };
             // Tao ma the nap
@@ -368,7 +375,10 @@ namespace HeThongQuanLyBaiDoXe
         {
             DataTable dataTable = new DataTable();
             var ketQua = sqlUtility.KiemTraRaVao(duLieu, ref dataTable);
-
+            if (dataTable.Rows.Count <= 0)
+            {
+                return "TaiKhoanKhongTonTai";
+            }
             Users user = Table.ParseUser(dataTable.Rows[0]);
             int soDuKhaDung = Convert.ToInt32(user.SoDuKhaDung);
             int donGia = Convert.ToInt32(user.DonGia);

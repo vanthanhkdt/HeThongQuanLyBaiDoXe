@@ -17,6 +17,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace HeThongQuanLyBaiDoXe
 {
@@ -75,7 +76,8 @@ namespace HeThongQuanLyBaiDoXe
             string duLieuNhanDuoc = congComDocMaThe.ReadExisting();
 
             //TODO:
-            txtCode.Text = duLieuNhanDuoc;
+            Dispatcher.Invoke(() => { txtCode.Text = duLieuNhanDuoc; });
+            //txtCode.Text = duLieuNhanDuoc;
         }
 
         public bool DangMo()
@@ -119,7 +121,7 @@ namespace HeThongQuanLyBaiDoXe
             logInWindow.Show();
             this.Close();
         }
-       
+
         private void TaiSoTienNopTruoc()
         {
             int index = 0;
@@ -156,7 +158,7 @@ namespace HeThongQuanLyBaiDoXe
                 txtDep.Focus();
             }
 
-            else if (cbbDaNop.SelectedIndex==-1)
+            else if (cbbDaNop.SelectedIndex == -1)
             {
                 tblErrorMessage.Text = "Vui lòng chọn Số tiền nộp trước.";
                 cbbDaNop.Focus();
@@ -200,7 +202,7 @@ namespace HeThongQuanLyBaiDoXe
                 else
                 {
                     string ketQua = sqlUtility.DangKyTaiKhoan(txtName.Text, txtBienKiemSoat.Text, txtDep.Text, txtCode.Text, pwPassword.Password, cbbPhanQuyen.SelectedItem.ToString(), txtReason.Text, "", cbbDaNop.SelectedItem.ToString(), this.SrcImage);
-                    if (ketQua!=string.Empty)
+                    if (ketQua != string.Empty)
                     {
                         tblErrorMessage.Text = "Tài khoản " + txtCode.Text.Trim() + " đã tồn tại.";
                         txtCode.Select(0, txtCode.Text.Length);
@@ -208,7 +210,7 @@ namespace HeThongQuanLyBaiDoXe
                     }
                     else
                     {
-                        tblErrorMessage.Text = "";                        
+                        tblErrorMessage.Text = "";
                         tblErrorMessage.Text = "Đăng ký thành công. Đang chờ phê duyệt.";
                         Reset();
                     }
