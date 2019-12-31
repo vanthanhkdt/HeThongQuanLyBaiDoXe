@@ -54,7 +54,7 @@ namespace HeThongQuanLyBaiDoXe
             {
                 if (congCom != null && congCom.IsOpen)
                 {
-                    congCom.Write(duLieuGui + "\r");
+                    congCom.Write(duLieuGui + "\r"); // Thêm ký tự '\r' (ký tự kết thúc chuỗi) để mạch không bị đơ.
                     return true;
                 }
                 return false;
@@ -111,8 +111,8 @@ namespace HeThongQuanLyBaiDoXe
             {
                 if (congCom != null && congCom.IsOpen)
                 {
-                    congCom.Write(duLieuGui + "\r"); // Thêm ký tự '\r' (ký tự kết thúc chuỗi) để mạch không bị đơ.
-                    return true;
+                    if (this.Gui(duLieuGui))
+                        return true;
                 }
                 return false;
             }
@@ -129,7 +129,7 @@ namespace HeThongQuanLyBaiDoXe
             string duLieuNhanDuoc = congCom.ReadExisting();
 
             //TODO:
-            TienHanhKiemTra.Invoke(loaiCongRaVao, duLieuNhanDuoc);
+            TienHanhKiemTra?.Invoke(loaiCongRaVao, duLieuNhanDuoc);
             HanhDongLayMaTheTamThoi?.Invoke(duLieuNhanDuoc);
         }
 

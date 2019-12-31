@@ -67,9 +67,9 @@ namespace HeThongQuanLyBaiDoXe
             switch (code)
             {
                 case "0": return "Nhà phát triển";
-                case "3": return "Giảng viên";
-                case "2": return "Sinh viên";
                 case "1": return "Nhân viên Bãi xe";
+                case "2": return "Sinh viên";
+                case "3": return "Giảng viên";
                 case "4": return "Khách";
                 case "5": return "Quản trị viên";
                 default: return "(N/A)";
@@ -106,6 +106,7 @@ namespace HeThongQuanLyBaiDoXe
             "ThoiGianGuiCuoi",
             "HinhAnh",
             "DonGia"};
+
         /// <summary>
         ///  hoTen,maSo,khoaLop,maTheGui,matKhau,phanQuyen,lyDo,daXuLy,daNop,hinhAnh 
         /// </summary>

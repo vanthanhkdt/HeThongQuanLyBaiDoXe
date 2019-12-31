@@ -71,7 +71,7 @@ namespace HeThongQuanLyBaiDoXe
             congComCuaVao.TienHanhKiemTra += (loaiCong, duLieu) =>
             {
                 string ketQua = KiemTraDuLieuRaVao(loaiCong, duLieu);
-                if (!string.IsNullOrEmpty(ketQua))
+                if (ketQua == "TaiKhoanKhongTonTai" || ketQua == "KhongTimThay")
                     return;
                 Users u = sqlUtility.LayUserTuMaTheGui(duLieu);
                 string duLieuPhanHoi = ketQua;
@@ -107,6 +107,8 @@ namespace HeThongQuanLyBaiDoXe
             congComCuaRa.TienHanhKiemTra += (loaiCong, duLieu) =>
             {
                 string ketQua = KiemTraDuLieuRaVao(loaiCong, duLieu);
+                if (ketQua == "TaiKhoanKhongTonTai" || ketQua == "KhongTimThay")
+                    return;
                 Users u = sqlUtility.LayUserTuMaTheGui(duLieu);
                 string duLieuPhanHoi = ketQua;
                 if (string.IsNullOrEmpty(ketQua))
@@ -119,7 +121,6 @@ namespace HeThongQuanLyBaiDoXe
                                     + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
                                     + "SD: " + u.SoDuKhaDung;                // Hàng 4: Số dư khả dụng
                     congComCuaRa.PhanHoiHanhDong(HoatDong.Ra, true, duLieuPhanHoi);
-                    // MessageWindow m = new MessageWindow(duLieuPhanHoi);
                     Dispatcher.Invoke(() => { MessageWindow m = new MessageWindow(duLieuPhanHoi); });
                 }
                 else
@@ -430,7 +431,7 @@ namespace HeThongQuanLyBaiDoXe
             tblTongSoLuongCho.Text = tongSoLuongCho.ToString();
             tblSoLuongChoKhaDung.Text = soLuongChoKhaDung.ToString();
 
-            int soLuongDangGui = tongSoLuongCho = soLuongChoKhaDung;
+            int soLuongDangGui = tongSoLuongCho - soLuongChoKhaDung;
 
             tblTiLeXeDangGui.Text = "" + Math.Round(100 * (double)soLuongDangGui / (double)tongSoLuongCho);
             tblTiLeXeDaTra.Text = "" + Math.Round(100 * (double)soLuongDangGui / (double)tongSoLuongCho);
