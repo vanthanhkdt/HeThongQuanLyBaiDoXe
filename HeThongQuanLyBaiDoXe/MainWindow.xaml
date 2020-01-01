@@ -108,11 +108,11 @@
         </Grid.RowDefinitions>
         <Grid Grid.Column="1" Grid.Row="1" Background="#FFCFCFCF">
             <TabControl TabStripPlacement="Top" SelectedIndex="{Binding TabControlSelectedIndex}" BorderBrush="Transparent" BorderThickness="0">
-                <!--<TabControl.ItemContainerStyle>
+                <TabControl.ItemContainerStyle>
                     <Style TargetType="{x:Type TabItem}">
                         <Setter Property="Visibility" Value="Collapsed"/>
                     </Style>
-                </TabControl.ItemContainerStyle>-->
+                </TabControl.ItemContainerStyle>
                 <TabItem Header="Thống kê">
                     <Grid Background="#FFCFCFCF">
                         <ScrollViewer>
@@ -148,7 +148,7 @@
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="20">
                                             <materialDesign:PackIcon Kind="AlertOutline" Foreground="Red" Width="10" Height="10" VerticalAlignment="Center" Margin="5 0"/>
-                                            <TextBlock Text="Số lượng xe gửi nhiều." FontSize="8" Foreground="#FF8522BD"/>
+                                            <TextBlock Name="tblTinhTrangXeGui" Text="Số lượng xe gửi nhiều." FontSize="8" Foreground="#FF8522BD"/>
                                         </StackPanel>
                                     </Grid>
                                 </Grid>
@@ -201,7 +201,7 @@
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="20">
                                             <materialDesign:PackIcon Kind="ProgressWarning" Foreground="Gray" Width="10" Height="10" VerticalAlignment="Center" Margin="5 0"/>
-                                            <TextBlock Text="Số lượng chỗ trống ít." FontSize="8" Foreground="Gray"/>
+                                            <TextBlock Name="tblTinhTrangChoTrong" Text="Số lượng chỗ trống ít." FontSize="8" Foreground="Gray"/>
                                         </StackPanel>
                                     </Grid>
                                 </Grid>

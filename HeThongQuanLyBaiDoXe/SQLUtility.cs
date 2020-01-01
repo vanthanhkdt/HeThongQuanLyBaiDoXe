@@ -846,7 +846,10 @@ namespace HeThongQuanLyBaiDoXe
         public int SoLuongDangGui()
         {
             return this.GetDataTable($"SELECT * FROM TBUsers WHERE DangGui=1 AND ChoPhepHoatDong=1;").Rows.Count;
-            //return 120;
+        }
+        public int SoLuotGuiTheoNgay(string stringDate)
+        {
+            return this.GetDataTable($"SELECT * FROM TBActivities WHERE CONVERT(date, ThoiGian)=CONVERT(date, '{stringDate}') AND HoatDong=1 AND ThanhCong=1;").Rows.Count;
         }
         // Byte FileData
         public byte[] GetFileDataDB(string sql)

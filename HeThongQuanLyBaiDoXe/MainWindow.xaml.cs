@@ -47,8 +47,9 @@ namespace HeThongQuanLyBaiDoXe
 
         public int tongSoLuongCho = 200;
         public const string CU_PHAP_NAP_THE = "FEE+NAPTHE=";
+        public const string LCD_LINE = "\r\n";
         BackgroundWorker exportEXCEL = new BackgroundWorker();
-        DispatcherTimer timerCapNhatDashBoard;
+        //DispatcherTimer timerCapNhatDashBoard;
 
         public MainWindow(Users user)
         {
@@ -63,11 +64,13 @@ namespace HeThongQuanLyBaiDoXe
 
             LoadData();
             LayCongCom();
+            ParseDashBoard(tongSoLuongCho - sqlUtility.SoLuongDangGui()); //Update Dash Board
 
             congComCuaVao = new CongComRaVao(LoaiCongRaVao.Vao, Properties.Settings.Default.COMCuaVao);
 #if KET_NOI_CONG_COM
             congComCuaVao.BatDauKetNoi();
 #endif
+
             congComCuaVao.TienHanhKiemTra += (loaiCong, duLieu) =>
             {
                 string ketQua = KiemTraDuLieuRaVao(loaiCong, duLieu);
@@ -78,23 +81,24 @@ namespace HeThongQuanLyBaiDoXe
                 if (string.IsNullOrEmpty(ketQua))
                 {                                                            // LCD screen Constructor
                     duLieuPhanHoi = "Thanh Cong: Vao"                        // Hàng 1: Thanh Cong: Vao
-                                    + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
+                                    + LCD_LINE                               // //////////////////////// Ký tự Xuống dòng
                                     + Table.XoaChuCoDauDeHienThiLCD(u.HoTen) // Hàng 2: Họ tên
-                                    + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
+                                    + LCD_LINE                               // //////////////////////// Ký tự Xuống dòng
                                     + "Ma So: " + u.MaSo                     // Hàng 3: Biển kiểm soát/ CMND
-                                    + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
+                                    + LCD_LINE                               // //////////////////////// Ký tự Xuống dòng
                                     + "SD: " + u.SoDuKhaDung;                // Hàng 4: Số dư khả dụng
                     congComCuaVao.PhanHoiHanhDong(HoatDong.Vao, true, duLieuPhanHoi);
                     Dispatcher.Invoke(() => { MessageWindow m = new MessageWindow(duLieuPhanHoi); });
+                    ParseDashBoard(tongSoLuongCho - sqlUtility.SoLuongDangGui()); //Update Dash Board
                 }
                 else
                 {                                                            // LCD screen Constructor
                     duLieuPhanHoi = "That bai: Vao"                          // Hàng 1: That bai: Vao
-                                    + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
+                                    + LCD_LINE                               // //////////////////////// Ký tự Xuống dòng
                                     + Table.XoaChuCoDauDeHienThiLCD(u.HoTen) // Hàng 2: Họ tên
-                                    + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
+                                    + LCD_LINE                               // //////////////////////// Ký tự Xuống dòng
                                     + "So Du Khong Du"                       // Hàng 3: Thông báo Số dư không đủ
-                                    + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
+                                    + LCD_LINE                               // //////////////////////// Ký tự Xuống dòng
                                     + "SD: " + u.SoDuKhaDung;                // Hàng 4: Số dư khả dụng
                     congComCuaVao.PhanHoiHanhDong(HoatDong.Vao, false, duLieuPhanHoi);
                     Dispatcher.Invoke(() => { MessageWindow m = new MessageWindow(duLieuPhanHoi); });
@@ -114,23 +118,24 @@ namespace HeThongQuanLyBaiDoXe
                 if (string.IsNullOrEmpty(ketQua))
                 {                                                            // LCD screen Constructor
                     duLieuPhanHoi = "Thanh Cong: Ra"                         // Hàng 1: Thanh Cong: Ra
-                                    + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
+                                    + LCD_LINE                               // //////////////////////// Ký tự Xuống dòng
                                     + Table.XoaChuCoDauDeHienThiLCD(u.HoTen) // Hàng 2: Họ tên
-                                    + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
+                                    + LCD_LINE                               // //////////////////////// Ký tự Xuống dòng
                                     + "SD: " + u.SoDuKhaDung                 // Hàng 3: Biển kiểm soát/ CMND
-                                    + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
+                                    + LCD_LINE                               // //////////////////////// Ký tự Xuống dòng
                                     + "SD: " + u.SoDuKhaDung;                // Hàng 4: Số dư khả dụng
                     congComCuaRa.PhanHoiHanhDong(HoatDong.Ra, true, duLieuPhanHoi);
                     Dispatcher.Invoke(() => { MessageWindow m = new MessageWindow(duLieuPhanHoi); });
+                    ParseDashBoard(tongSoLuongCho - sqlUtility.SoLuongDangGui()); //Update Dash Board
                 }
                 else
                 {                                                            // LCD screen Constructor
                     duLieuPhanHoi = "That bai: Ra"                           // Hàng 1: That bai: Ra
-                                    + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
+                                    + LCD_LINE                               // //////////////////////// Ký tự Xuống dòng
                                     + Table.XoaChuCoDauDeHienThiLCD(u.HoTen) // Hàng 2: Họ tên
-                                    + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
+                                    + LCD_LINE                               // //////////////////////// Ký tự Xuống dòng
                                     + "So Du Khong Du"                       // Hàng 3: Thông báo Số dư không đủ
-                                    + "\r\n"                                 // //////////////////////// Ký tự Xuống dòng
+                                    + LCD_LINE                               // //////////////////////// Ký tự Xuống dòng
                                     + "SD: " + u.SoDuKhaDung;                // Hàng 4: Số dư khả dụng
                     congComCuaRa.PhanHoiHanhDong(HoatDong.Ra, false, duLieuPhanHoi);
                     Dispatcher.Invoke(() => { MessageWindow m = new MessageWindow(duLieuPhanHoi); });
@@ -145,13 +150,13 @@ namespace HeThongQuanLyBaiDoXe
             //exportEXCEL.WorkerReportsProgress = true;
             //exportEXCEL.WorkerSupportsCancellation = true;
 
-            timerCapNhatDashBoard = new DispatcherTimer();
-            timerCapNhatDashBoard.Interval = new TimeSpan(0, 0, 20); // Update DashBoard every 20s
-            timerCapNhatDashBoard.Tick += (sender, e) =>
-            {
-                ParseDashBoard(tongSoLuongCho - sqlUtility.SoLuongDangGui());
-            };
-            timerCapNhatDashBoard.Start();
+            //timerCapNhatDashBoard = new DispatcherTimer();
+            //timerCapNhatDashBoard.Interval = new TimeSpan(0, 0, 20); // Update DashBoard every 20s
+            //timerCapNhatDashBoard.Tick += (sender, e) =>
+            //{
+            //    ParseDashBoard(tongSoLuongCho - sqlUtility.SoLuongDangGui());
+            //};
+            //timerCapNhatDashBoard.Start();
 
             KhoiTaoBieuDo();
             TaiBieuDo();
@@ -426,7 +431,7 @@ namespace HeThongQuanLyBaiDoXe
             }
         }
 
-        private void ParseDashBoard(int soLuongChoKhaDung) // Updating...
+        private void ParseDashBoard(int soLuongChoKhaDung)
         {
             tblTongSoLuongCho.Text = tongSoLuongCho.ToString();
             tblSoLuongChoKhaDung.Text = soLuongChoKhaDung.ToString();
@@ -435,7 +440,47 @@ namespace HeThongQuanLyBaiDoXe
 
             tblTiLeXeDangGui.Text = "" + Math.Round(100 * (double)soLuongDangGui / (double)tongSoLuongCho);
             tblTiLeXeDaTra.Text = "" + Math.Round(100 * (double)soLuongDangGui / (double)tongSoLuongCho);
-            tblTiLeThayDoi.Text = "15";
+
+            tblTinhTrangXeGui.Text = soLuongChoKhaDung > tongSoLuongCho / 2 ? "Số lượng xe đang gửi ít" : "Số lượng xe đang gửi nhiều";
+            tblTinhTrangChoTrong.Text = soLuongChoKhaDung > tongSoLuongCho / 2 ? "Số lượng chỗ trống nhiều" : "Số lượng chỗ trống ít";
+
+            int soLuotGuiHomQua = sqlUtility.SoLuotGuiTheoNgay(DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd"));
+            int soLuotGuiHomNay = sqlUtility.SoLuotGuiTheoNgay(DateTime.Now.ToString("yyyy-MM-dd"));
+
+            double tiLeGuiHomQua = Math.Round(100 * (double)soLuotGuiHomQua / (double)tongSoLuongCho);
+            double tiLeGuiHomNay = Math.Round(100 * (double)soLuotGuiHomNay / (double)tongSoLuongCho);
+
+            double tiLeGuiThayDoi = tiLeGuiHomNay - tiLeGuiHomQua;
+            tblTiLeThayDoi.Text = tiLeGuiThayDoi.ToString() + "%";
+
+            if (tiLeGuiThayDoi == 0)
+            {
+                packIconTiLeThayDoi.Kind = PackIconKind.Ban;
+                btlTinhTrangTiLeThayDoi.Text = "Không thay đổi";
+            }
+            else if (tiLeGuiThayDoi < 0 && tiLeGuiThayDoi > -10)
+            {
+                packIconTiLeThayDoi.Kind = PackIconKind.ArrowDown;
+                btlTinhTrangTiLeThayDoi.Text = "Giảm nhẹ";
+            }
+            else if (tiLeGuiThayDoi < -10)
+            {
+                packIconTiLeThayDoi.Kind = PackIconKind.ArrowDown;
+                btlTinhTrangTiLeThayDoi.Text = "Giảm mạnh";
+            }
+            else if (tiLeGuiThayDoi > 0 && tiLeGuiThayDoi < 10)
+            {
+                packIconTiLeThayDoi.Kind = PackIconKind.ArrowUp;
+                btlTinhTrangTiLeThayDoi.Text = "Tăng nhẹ";
+            }
+            else if (tiLeGuiThayDoi > 10)
+            {
+                packIconTiLeThayDoi.Kind = PackIconKind.ArrowUp;
+                btlTinhTrangTiLeThayDoi.Text = "Tăng mạnh";
+            }
+            tblThoiGianCapNhat.Text = DateTime.Now.ToString("HH:mm dd/MM/yyyy");
+
+            TaiBieuDo(); // Biểu đồ
         }
         private void LoadData()
         {
@@ -950,6 +995,7 @@ namespace HeThongQuanLyBaiDoXe
             tblBienKiemSoat.Text = user.MaSo;
             tblProfileAuthorDetail.Text = Table.LayTenPhanQuyenTuMa(user.PhanQuyen);
             tblAddress.Text = user.KhoaLop;
+            tblMaTheGui.Text = user.MaTheGui;
             tblTaiKhoanKhaDung.Text = user.SoDuKhaDung;
             borderTrangThai.Background = user.DangGui == "True" ? Brushes.Green : Brushes.Gray;
             tblStatus.Text = user.DangGui == "True" ? "Đang gửi" : "Không gửi";
@@ -963,6 +1009,7 @@ namespace HeThongQuanLyBaiDoXe
             tblTTBienKiemSoat.Text = user.MaSo;
             tblTTProfileAuthorDetail.Text = Table.LayTenPhanQuyenTuMa(user.PhanQuyen);
             tblTTAddress.Text = user.KhoaLop;
+            tblMaTheGui.Text = user.MaTheGui;
             tblTTSoDuKhaDung.Text = user.SoDuKhaDung;
             borderTrangThaiTT.Background = user.DangGui == "True" ? Brushes.Green : Brushes.Gray;
         }
@@ -974,6 +1021,7 @@ namespace HeThongQuanLyBaiDoXe
             tblBienKiemSoat.Text = user.MaSo;
             tblProfileAuthorDetail.Text = Table.LayTenPhanQuyenTuMa(register.PhanQuyen);
             tblAddress.Text = register.KhoaLop;
+            tblMaTheGui.Text = user.MaTheGui;
             tblTaiKhoanKhaDung.Text = register.DaNop;
         }
 
@@ -1111,22 +1159,24 @@ namespace HeThongQuanLyBaiDoXe
             YFormatter = value => value.ToString();
         }
 
+        private Dictionary<DateTime,int> LaySoLuongTongHopGuiTrongTuan(DateTime dateNow)
+        {
+            Dictionary<DateTime, int> result = new Dictionary<DateTime, int>();
+            for (int i = -6; i <= 0; i++)
+            {
+                var date = dateNow.AddDays(i);
+                string strDate = date.ToString("yyyy-MM-dd");
+                result.Add(date, sqlUtility.SoLuotGuiTheoNgay(strDate));
+            }
+            return result;
+        }
         private void TaiBieuDo()
         {
-            DataTable dataTable = sqlUtility.GetDataTable(TableName.Users);
+            Dictionary<DateTime, int> tongHopSoLuongGuiTrongTuan = LaySoLuongTongHopGuiTrongTuan(DateTime.Now);
+            double luongGuiTrungBinhTrongTuan = tongHopSoLuongGuiTrongTuan.Average(t => t.Value);
 
-            List<DataRow> danhSachGui = dataTable.Rows.OfType<DataRow>()
-                               .Select(dr => dr).ToList();
-
-            for (int i = (-1) * SoDiemToiDaTrenBieuDo; i <= 0; i++)
+            foreach (var item in tongHopSoLuongGuiTrongTuan.OrderBy(kp => kp.Key))
             {
-                // Tinh toan gia tri
-                //int soDiem = SoDiemToiDaTrenBieuDo;
-
-                DateTime homNay = DateTime.Now;
-                DateTime ngayDeVeBieuDo = homNay.AddDays(i);
-
-                //int soLuongXeGuiNgayDangChon = danhSachGui.Where(date => date.Field<DateTime>("GuiLanCuoi") == ngayDeVeBieuDo).ToList().Count;
                 Task.Factory.StartNew(new Action(() =>
                 {
                     if (BienDongGuiXeSeriesCollection[0].Values.Count > SoDiemToiDaTrenBieuDo)
@@ -1136,14 +1186,13 @@ namespace HeThongQuanLyBaiDoXe
                         XLabels.RemoveAt(0);
                     }
 
-                    BienDongGuiXeSeriesCollection[0].Values.Add(new Random().NextDouble() * (800 - 600) + 600);
-                    BienDongGuiXeSeriesCollection[1].Values.Add(new Random().NextDouble() * (800 - 600) + 600);
+                    BienDongGuiXeSeriesCollection[0].Values.Add(Convert.ToDouble(item.Value));
+                    BienDongGuiXeSeriesCollection[1].Values.Add(luongGuiTrungBinhTrongTuan);
 
-                    XLabels.Add(ngayDeVeBieuDo.ToShortDateString());
+                    XLabels.Add(item.Key.ToString("yyyy-MM-dd"));
                 }));
             }
         }
-
 
         #endregion
 
