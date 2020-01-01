@@ -439,7 +439,7 @@ namespace HeThongQuanLyBaiDoXe
             int soLuongDangGui = tongSoLuongCho - soLuongChoKhaDung;
 
             tblTiLeXeDangGui.Text = "" + Math.Round(100 * (double)soLuongDangGui / (double)tongSoLuongCho);
-            tblTiLeXeDaTra.Text = "" + Math.Round(100 * (double)soLuongDangGui / (double)tongSoLuongCho);
+            tblTiLeXeDaTra.Text = "" + Math.Round(100 * (double)soLuongChoKhaDung / (double)tongSoLuongCho);
 
             tblTinhTrangXeGui.Text = soLuongChoKhaDung > tongSoLuongCho / 2 ? "Số lượng xe đang gửi ít" : "Số lượng xe đang gửi nhiều";
             tblTinhTrangChoTrong.Text = soLuongChoKhaDung > tongSoLuongCho / 2 ? "Số lượng chỗ trống nhiều" : "Số lượng chỗ trống ít";
